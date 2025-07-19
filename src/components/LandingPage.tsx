@@ -1,11 +1,25 @@
-import React from "react";
+"use client";
 
-const LandingPage: React.FC = () => {
+import { SignInButton, useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+
+export default function LandingPage(props: any) {
+  const router = useRouter();
+  if(props.user) {
+    router.push('/hr');
+  }  
+
   return (
-    <div>
-        <h1>Landing Page</h1>
+    <div> 
+        <h1>Welcome</h1>
+        <SignInButton />
     </div>
+ 
   );
 };
 
-export default LandingPage;
+export const getStaticProps = (async () => {
+  const {user} = useUser();
+ 
+  return { props: { user } }
+})
