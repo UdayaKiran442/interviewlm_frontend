@@ -13,3 +13,10 @@ export function H1({ children, className }: H1Props) {
   // it will correctly override the default (text-7xl).
   return <h1 className={cn("!text-7xl font-bold", className)}>{children}</h1>;
 }
+export function H2({ children, className }: H1Props) {
+  return <h2 className={cn("!text-4xl font-bold", className)}>{children}</h2>;
+}
+
+export function H3({ children, className }: H1Props) {
+  return <h3 className={cn("!text-3xl font-bold", className)}>{children}</h3>;
+}

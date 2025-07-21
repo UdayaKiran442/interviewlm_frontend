@@ -8,8 +8,9 @@ import { ArrowRight, Play } from "lucide-react";
 
 import Navigation from "./Navigation";
 
-import { H1 } from "./ui/Typography";
+import { H1, H2 } from "./ui/Typography";
 import Button from "./ui/Buttons";
+import { InterviewLMCard, TraditionalHiringCard } from "./ComparisionCard"; //TraditionalHiringCard from "./ComparisionCard";
 
 export default function LandingPage(props: any) {
   const router = useRouter();
@@ -56,6 +57,27 @@ export default function LandingPage(props: any) {
               Schedule Demo
               <ArrowRight className="ml-2 flex justify-center items-center" />
             </Button>
+          </div>
+        </div>
+        {/* Comparison section */}
+        <div className="mt-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="flex justify-center items-center gap-2">
+              <H2 className="!text-[#121827]">Traditional Hiring</H2>
+              <H2 className="!text-gray-400">vs</H2>
+              <H2 className="!text-[#121827]">InterviewLM</H2>
+            </div>
+            <p className="text-gray-600 mt-2 text-lg max-w-2xl mx-auto">
+              Why choose InterviewLM over traditional hiring methods
+            </p>
+          </div>
+          <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 mt-16 w-full">
+            <div className="w-full md:w-1/2 lg:w-[25%]">
+              <TraditionalHiringCard />
+            </div>
+            <div className="w-full md:w-1/2 lg:w-[75%]">
+              <InterviewLMCard />
+            </div>
           </div>
         </div>
       </div>
