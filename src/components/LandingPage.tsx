@@ -4,13 +4,14 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, Brain, Clock, Play, Shield, Target } from "lucide-react";
 
 import Navigation from "./Navigation";
 
 import { H1, H2 } from "./ui/Typography";
 import Button from "./ui/Buttons";
 import { InterviewLMCard, TraditionalHiringCard } from "./ComparisionCard"; //TraditionalHiringCard from "./ComparisionCard";
+import FeatureCard from "./FeatureCard";
 
 export default function LandingPage(props: any) {
   const router = useRouter();
@@ -78,6 +79,42 @@ export default function LandingPage(props: any) {
             <div className="w-full md:w-1/2 lg:w-[75%]">
               <InterviewLMCard />
             </div>
+          </div>
+        </div>
+        {/* features */}
+        <div className="mt-20">
+          <H2 className="text-center">
+            Powerful Features for Modern Recruitment
+          </H2>
+          <p className="text-gray-600 mt-2 text-lg max-w-2xl mx-auto text-center">
+            Why choose InterviewLM over traditional hiring methods
+          </p>
+          {/* feature card */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-14 p-3">
+            <FeatureCard
+              icon={<Brain />}
+              title="AI-Powered Interviews"
+              description="Intelligent screening with dynamic questioning and real-time assessment"
+              className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white"
+            />
+            <FeatureCard
+              icon={<Clock />}
+              title="Automated Workflows"
+              description="Streamlined processes from application to final decision"
+              className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white"
+            />
+            <FeatureCard
+              icon={<Shield />}
+              title="Bias-Free Screening"
+              description="Fair and consistent evaluation criteria for all candidates"
+              className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white"
+            />
+            <FeatureCard
+              icon={<Target />}
+              title="Precise Matching"
+              description="Gen AI based resume screening and candidate-job fit analysis"
+              className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white"
+            />
           </div>
         </div>
       </div>

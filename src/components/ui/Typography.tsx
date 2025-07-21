@@ -20,3 +20,7 @@ export function H2({ children, className }: H1Props) {
 export function H3({ children, className }: H1Props) {
   return <h3 className={cn("!text-3xl font-bold", className)}>{children}</h3>;
 }
+
+export function H4({ children, className }: H1Props) {
+  return <h4 className={cn("!text-xl font-bold", className)}>{children}</h4>;
+}
