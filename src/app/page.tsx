@@ -1,6 +1,6 @@
 import { currentUser } from '@clerk/nextjs/server'
-
 import LandingPage from "@/components/LandingPage";
+import { redirect } from 'next/navigation';
 
 
 export default async function Home() {
@@ -17,7 +17,12 @@ export default async function Home() {
       body: JSON.stringify({ userId, email, role }),
     });
     const response = await loginAPI.json();
-    console.log(response);
+    // redirect based on role
+    if (response.success && response.role === 'candidate') {
+      redirect('/candidate');
+    } else if (response.success && response.role === 'hr') {
+      redirect('/hr');
+    }
   }
   return (
     <>
