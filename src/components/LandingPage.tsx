@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/rules-of-hooks */
-"use client";
+"use client"
 
-import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import { ArrowRight, Brain, Clock, Play, Shield, Target } from "lucide-react";
 
 import Navigation from "./Navigation";
@@ -13,11 +11,7 @@ import Button from "./ui/Buttons";
 import { InterviewLMCard, TraditionalHiringCard } from "./ComparisionCard"; //TraditionalHiringCard from "./ComparisionCard";
 import FeatureCard from "./FeatureCard";
 
-export default function LandingPage(props: any) {
-  const router = useRouter();
-  if (props.user) {
-    router.push("/hr");
-  }
+export default function LandingPage() {
 
   return (
     <div>
@@ -122,8 +116,3 @@ export default function LandingPage(props: any) {
   );
 }
 
-export const getStaticProps = async () => {
-  const { user } = useUser();
-
-  return { props: { user } };
-};
