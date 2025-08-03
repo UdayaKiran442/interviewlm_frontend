@@ -8,19 +8,19 @@ export default async function Home() {
   if (user) {
     const userId = user.id;
     const email = user.emailAddresses[0].emailAddress;
-    const role = 'candidate';
-    const loginAPI = await fetch("http://localhost:3000/v1/candidate/login", {
+    const loginAPI = await fetch("http://localhost:3000/v1/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId, email, role }),
+      body: JSON.stringify({ userId, email }),
     });
     const response = await loginAPI.json();
+    console.log(response);
     // redirect based on role
-    if (response.success && response.role === 'candidate') {
+    if (response.success && response.res.role === 'candidate') {
       redirect('/candidate');
-    } else if (response.success && response.role === 'hr') {
+    } else if (response.success && response.res.role === 'hr') {
       redirect('/hr');
     }
   }
