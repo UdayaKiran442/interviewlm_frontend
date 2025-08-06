@@ -15,7 +15,6 @@ export default function LandingPage() {
 
   return (
     <div>
-      <Navigation />
       <div className="h-screen w-screen bg-[#F9FCFE] flex flex-col items-center">
         {/* Hero Section */}
         <div className="max-w-4xl text-center mx-auto">

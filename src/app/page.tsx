@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import LandingPage from "@/components/LandingPage";
 import { loginUserAPI } from '@/actions/auth';
 import { getCurrentUser } from '@/utils/getCurrentUser.utils';
+import Navigation from '@/components/Navigation';
 
 
 export default async function Home() {
@@ -18,7 +19,9 @@ export default async function Home() {
   }
   return (
     <>
-      <LandingPage />
+      <Navigation>
+        <LandingPage />
+      </Navigation>
     </>
   );
 }
