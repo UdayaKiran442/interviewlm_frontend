@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 
 export default async function Home() {
   const user = await currentUser();
+  // const dispatch = useDispatch();
   if (user) {
     const userId = user.id;
     const email = user.emailAddresses[0].emailAddress;
@@ -17,6 +18,7 @@ export default async function Home() {
     });
     const response = await loginAPI.json();
     // redirect based on role
+    // dispatch(setUser(response.res))
     if (response.success && response.res.role === 'candidate') {
       redirect('/candidate');
     } else if (response.success && response.res.role === 'hr') {
