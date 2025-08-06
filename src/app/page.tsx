@@ -16,7 +16,6 @@ export default async function Home() {
       body: JSON.stringify({ userId, email }),
     });
     const response = await loginAPI.json();
-    console.log(response);
     // redirect based on role
     if (response.success && response.res.role === 'candidate') {
       redirect('/candidate');
