@@ -1,16 +1,14 @@
 import { redirect } from 'next/navigation';
-import { currentUser } from '@clerk/nextjs/server'
 
 import LandingPage from "@/components/LandingPage";
-import { loginUser } from '@/actions/auth';
+import { loginUserAPI } from '@/actions/auth';
+import { getCurrentUser } from '@/utils/getCurrentUser.utils';
 
 
 export default async function Home() {
-  const user = await currentUser();
+  const user = await getCurrentUser()
   if (user) {
-    const userId = user.id;
-    const email = user.emailAddresses[0].emailAddress;
-    const response = await loginUser({ userId, email });
+    const response = await loginUserAPI({ userId: user.userId, email: user.email });
     // redirect based on role
     if (response.success && response.res.role === 'candidate') {
       redirect('/candidate');

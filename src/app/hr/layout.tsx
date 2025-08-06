@@ -1,8 +1,8 @@
-import { loginUser } from "@/actions/auth"
-import { currentUser } from "@clerk/nextjs/server";
+import { loginUserAPI } from "@/actions/auth"
 
 import Navigation from "@/components/Navigation"
 import { ILoginAPIHRResponse } from "@/types/types";
+import { getCurrentUser } from "@/utils/getCurrentUser.utils";
 
 export default async function HRLayout({
     children,
@@ -10,11 +10,11 @@ export default async function HRLayout({
     children: React.ReactNode
 }) {
     try {
-        const user = await currentUser();
+        const user = await getCurrentUser();
         if (user) {
-            const userId = user.id;
-            const email = user.emailAddresses[0].emailAddress;
-            const response = await loginUser({ userId, email }) as ILoginAPIHRResponse
+            const userId = user.userId;
+            const email = user.email;
+            const response = await loginUserAPI({ userId, email }) as ILoginAPIHRResponse
             if (response.success && response.res.role === 'hr') {
                 return <Navigation user={response.res}>{children}</Navigation>
             }
