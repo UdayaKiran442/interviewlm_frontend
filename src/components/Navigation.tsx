@@ -1,13 +1,14 @@
 "use client"
+import { useState } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { useAuth, SignInButton, SignUpButton, SignOutButton } from "@clerk/nextjs";
-import { Building2, Users } from 'lucide-react'
+import { Building2, Target, Users } from 'lucide-react'
 
 import logo from "../../public/logo.png";
 import { setUser } from "@/lib/features/authSlice";
 import { IHRUser } from "@/types/types";
-import Button from "./ui/Buttons";
+import NavigationButton from "./ui/NavigationButtons";
 
 export default function Navigation({
   children,
@@ -18,6 +19,7 @@ export default function Navigation({
 }) {
   const { isSignedIn } = useAuth();
   const dispatch = useDispatch();
+  const [activeButton, setActiveButton] = useState<string>('jobs');
 
   if (user) {
     dispatch(setUser(user))
@@ -40,14 +42,18 @@ export default function Navigation({
           <div className="flex items-center gap-4 mr-4">
             {user.role === 'hr' && (
               <>
-                <Button className="text-white text-sm font-semibold !bg-blue-600 !px-5 !py-1.7 !flex !items-center">
+                <NavigationButton className={activeButton === 'jobs' ? '!bg-blue-600 !py-2 hover:!bg-blue-500 !text-white border-2 !border-gray-200 !rounded-xl' : ''} onClick={() => setActiveButton('jobs')}>
                   <Users className="mr-2" />
                   <span>Jobs & Candidates</span>
-                </Button>
-                <Button className=" text-sm font-semibold !px-5 !py-1.7 !flex !items-center">
+                </NavigationButton>
+                <NavigationButton className={activeButton === 'create-job' ? '!bg-blue-600 !py-2 hover:!bg-blue-500 !text-white border-2 !border-gray-200 !rounded-xl' : ''} onClick={() => setActiveButton('create-job')}>
                   <Building2 className="mr-2" />
                   <span>Create Job</span>
-                </Button>
+                </NavigationButton>
+                <NavigationButton className={activeButton === 'validation' ? '!bg-blue-600 !py-2 hover:!bg-blue-500 !text-white border-2 !border-gray-200 !rounded-xl' : ''} onClick={() => setActiveButton('validation')}>
+                  <Target className="mr-2" />
+                  <span>Validation</span>
+                </NavigationButton>
               </>
             )}
           </div>
