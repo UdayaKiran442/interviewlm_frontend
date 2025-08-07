@@ -1,7 +1,8 @@
 "use client"
-import { useState } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { redirect } from "next/navigation";
 import { useAuth, SignInButton, SignUpButton, SignOutButton } from "@clerk/nextjs";
 import { Building2, Target, Users } from 'lucide-react'
 
@@ -42,11 +43,17 @@ export default function Navigation({
           <div className="flex items-center gap-4 mr-4">
             {user.role === 'hr' && (
               <>
-                <NavigationButton className={activeButton === 'jobs' ? '!bg-blue-600 !py-2 hover:!bg-blue-500 !text-white border-2 !border-gray-200 !rounded-xl' : ''} onClick={() => setActiveButton('jobs')}>
+                <NavigationButton className={activeButton === 'jobs' ? '!bg-blue-600 !py-2 hover:!bg-blue-500 !text-white border-2 !border-gray-200 !rounded-xl' : ''} onClick={() => {
+                  setActiveButton('jobs');
+                  redirect('/hr');
+                }}>
                   <Users className="mr-2" />
                   <span>Jobs & Candidates</span>
                 </NavigationButton>
-                <NavigationButton className={activeButton === 'create-job' ? '!bg-blue-600 !py-2 hover:!bg-blue-500 !text-white border-2 !border-gray-200 !rounded-xl' : ''} onClick={() => setActiveButton('create-job')}>
+                <NavigationButton className={activeButton === 'create-job' ? '!bg-blue-600 !py-2 hover:!bg-blue-500 !text-white border-2 !border-gray-200 !rounded-xl' : ''} onClick={() => {
+                  setActiveButton('create-job');
+                  redirect('/hr/create-job');
+                }}>
                   <Building2 className="mr-2" />
                   <span>Create Job</span>
                 </NavigationButton>
