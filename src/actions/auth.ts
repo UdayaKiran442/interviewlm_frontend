@@ -9,8 +9,12 @@ export async function loginUserAPI(payload: { userId: string; email: string }) {
             },
             body: JSON.stringify(payload),
         });
-        return await loginAPI.json();
+        const response = await loginAPI.json();
+        if (!response.success) {
+            throw new Error(response.message);
+        }
+        return response;
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 }
