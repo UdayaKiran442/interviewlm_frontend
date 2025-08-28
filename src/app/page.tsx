@@ -8,6 +8,8 @@ import Navigation from '@/components/Navigation';
 
 export default async function Home() {
   const user = await getCurrentUser()
+  let error = false
+  let errorMessage = ''
   if (user) {
     const response = await loginUserAPI({ userId: user.userId, email: user.email });
     // redirect based on role
@@ -15,7 +17,22 @@ export default async function Home() {
       redirect('/candidate');
     } else if (response.success && response.res.role === 'hr') {
       redirect('/hr');
+    } else if (response.success && response.res.role === 'reviewer') {
+      redirect('/reviewer');
     }
+    if (!response.success) {
+      error = true
+      errorMessage = response.message
+    }
+  }
+  if (error) {
+    return (
+      <>
+        <Navigation>
+          <p>{errorMessage}</p>
+        </Navigation>
+      </>
+    )
   }
   return (
     <>
