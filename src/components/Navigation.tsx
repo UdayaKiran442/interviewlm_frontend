@@ -27,6 +27,14 @@ export default function Navigation({
     dispatch(setUser(user))
   }
 
+  if (!isSignedIn) {
+    dispatch(setUser(null))
+  }
+
+  function signOut() {
+    dispatch(setUser(null))
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center p-4 border-b border-gray-300">
@@ -68,7 +76,7 @@ export default function Navigation({
         )}
         {isSignedIn ? (
           <SignOutButton>
-            <button className="font-semibold text-gray-600 hover:text-black transition-colors duration-200">
+            <button onClick={signOut} className="font-semibold text-gray-600 hover:text-black transition-colors duration-200">
               Logout
             </button>
           </SignOutButton>

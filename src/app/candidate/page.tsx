@@ -5,9 +5,9 @@ const CandidatePage: React.FC = () => {
     return (
         <div>
             <h1>Candidate Page</h1>
-            <button>
-                <SignOutButton />
-            </button>
+            <SignOutButton>
+                <button>Logout</button>
+            </SignOutButton>
         </div>
     );
 };

@@ -19,7 +19,5 @@ export default async function ReviewerLayout({
                 return <Navigation user={response.res}>{children}</Navigation>
             }
         }
-    } catch (error) {
-        console.log(error);
-    }
+    } catch (error) { }
 }
