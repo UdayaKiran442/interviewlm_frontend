@@ -1,10 +1,11 @@
 // Your H1 component file
 import { cn } from "@/lib/utils"; // Adjust the import path
+import { HTMLProps } from "react";
 
 // Corrected type for props
 interface TypegraphyProps {
   children: React.ReactNode;
-  className?: string; // The className prop is just a string
+  className?: HTMLProps<HTMLElement>["className"]; // The className prop is just a string
 }
 
 export function H1({ children, className }: TypegraphyProps) {
@@ -23,6 +24,10 @@ export function H3({ children, className }: TypegraphyProps) {
 
 export function H4({ children, className }: TypegraphyProps) {
   return <h4 className={cn("!text-xl font-bold", className)}>{children}</h4>;
+}
+
+export function H5({ children, className }: TypegraphyProps) {
+  return <h4 className={cn("text-lg font-bold", className)}>{children}</h4>;
 }
 
 export function Tagline({ children, className }: TypegraphyProps) {

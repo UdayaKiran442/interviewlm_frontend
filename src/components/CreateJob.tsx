@@ -1,7 +1,8 @@
 "use client"
 import Form from 'next/form'
+import { Plus, Info } from 'lucide-react'
 
-import { H3, H4, Tagline } from "./ui/Typography";
+import { H3, H4, H5, Tagline } from "./ui/Typography";
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Card } from './ui/Card';
@@ -53,6 +54,34 @@ export default function CreateJob({ submitJob }: Props) {
                             </div>
                         </div>
                     </Form>
+                </Card>
+                <Card className='mt-10'>
+                    <div className="mb-6">
+                        <H3>Interview Process</H3>
+                        <Tagline>Configure interview rounds and assessments</Tagline>
+                    </div>
+                    <div>
+                        <div className='flex justify-between items-center'>
+                            {/* title and button */}
+                            <H5>Interview Rounds</H5>
+                            <button className="flex items-center gap-2 !bg-blue-600 hover:!bg-blue-700 text-white font-bold px-4 py-2 rounded-xl">
+                                <Plus size={16} />
+                                Add Round
+                            </button>
+                        </div>
+                        {/* Tagline */}
+                        <Tagline className='!-mt-2 !text-sm'>Design your interview process by adding and configuring different assessment stages.</Tagline>
+                        <div>
+                            {/* round 1 info */}
+                            <Tagline className='!text-[0.8rem] !flex !items-center !gap-1'>
+                                <Info size={10} />
+                                Round 1 is automatically set as resume screening
+                            </Tagline>
+                        </div>
+                        <div>
+                            {/* Rounds info */}
+                        </div>
+                    </div>
                 </Card>
             </div>
         </div>
