@@ -4,6 +4,7 @@ import Form from 'next/form'
 import { H3, H4, Tagline } from "./ui/Typography";
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
+import { Card } from './ui/Card';
 
 interface Props {
     submitJob: (formData: FormData) => void;
@@ -17,7 +18,7 @@ export default function CreateJob({ submitJob }: Props) {
                     <H3>Create New Job Posting</H3>
                     <Tagline>Configure your job posting and interview process</Tagline>
                 </div>
-                <div className="p-8 bg-white w-full max-w-4xl rounded-lg shadow-sm">
+                <Card>
                     <div className="mb-6">
                         <H4>Job Details</H4>
                         <Tagline>Basic information about the position</Tagline>
@@ -52,7 +53,7 @@ export default function CreateJob({ submitJob }: Props) {
                             </div>
                         </div>
                     </Form>
-                </div>
+                </Card>
             </div>
         </div>
     );
