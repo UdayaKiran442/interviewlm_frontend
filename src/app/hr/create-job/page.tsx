@@ -1,11 +1,16 @@
 import React from "react";
+import CreateJob from "@/components/CreateJob";
 
-const HRPage: React.FC = async () => {
-    return (
-        <div>
-            <h1>Create Job</h1>
-        </div>
-    );
+// This is a server action
+async function submitJob(formData: FormData) {
+    'use server';
+    console.log('Form submitted:', formData);
+    // Add your form submission logic here
+    // This runs on the server
+}
+
+const HRPage: React.FC = () => {
+    return <CreateJob submitJob={submitJob} />;
 };
 
 export default HRPage;
