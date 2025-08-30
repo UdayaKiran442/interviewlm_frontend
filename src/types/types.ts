@@ -40,3 +40,14 @@ export type IHRJobsAPIResponse = {
     message: string;
     jobs: IJob[];
 }
+
+export type IRoundState = {
+    roundType: string;
+    roundName: string;
+    roundNumber: number;
+    questionType: string;
+    duration: number;
+    difficulty: string;
+    roundDescription: string | null;
+    isAI: boolean;
+}
