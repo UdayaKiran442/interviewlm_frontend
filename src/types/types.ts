@@ -51,3 +51,11 @@ export type IRoundState = {
     roundDescription: string | null;
     isAI: boolean;
 }
+
+export type IJobState = {
+    jobTitle: string;
+    jobLocation: string;
+    salary: string;
+    experience: string;
+    jobDescription: string;
+}
