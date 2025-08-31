@@ -1,7 +1,6 @@
 "use client"
 import { useState } from 'react';
-import Form from 'next/form'
-import { Plus, Info, Check, Bot, Clock, Brain, Delete, DeleteIcon, Trash } from 'lucide-react'
+import { Plus, Info, Bot, Clock, Brain, Trash } from 'lucide-react'
 
 import { H3, H4, H5, Tagline } from "./ui/Typography";
 import { Input } from './ui/Input';
@@ -15,7 +14,7 @@ interface Props {
     submitJob: (formData: FormData) => void;
 }
 
-export default function CreateJob({ submitJob }: Props) {
+export default function CreateJob() {
     const [jobDetails, setJobDetails] = useState<IJobState>({
         jobTitle: "",
         jobLocation: "",
@@ -59,6 +58,10 @@ export default function CreateJob({ submitJob }: Props) {
         });
     }
 
+    function submitJob() {
+        console.log(jobDetails, rounds);
+    }
+
     return (
         <div className="min-h-screen w-full bg-gray-100">
             <div className="ml-[20%] flex flex-col">
@@ -71,36 +74,34 @@ export default function CreateJob({ submitJob }: Props) {
                         <H4>Job Details</H4>
                         <Tagline>Basic information about the position</Tagline>
                     </div>
-                    <Form action={submitJob} className="w-full">
-                        <div className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label id='jobTitle' label='Job Title' className="block text-sm font-bold text-gray-700" />
-                                    <Input id='jobTitle' placeholder='e.g. Software Engineer' name='jobTitle' type='text' value={jobDetails.jobTitle} onChange={(e) => updateJobDetails('jobTitle', e.target.value)} />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label id='jobLocation' label='Job Location' className="block text-sm font-bold text-gray-700" />
-                                    <Input id='jobLocation' placeholder='e.g. Hyderabad, Bangalore, Remote' name='jobLocation' type='text' value={jobDetails.jobLocation} onChange={(e) => updateJobDetails('jobLocation', e.target.value)} />
-                                </div>
+                    <div className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label id='jobTitle' label='Job Title' className="block text-sm font-bold text-gray-700" />
+                                <Input id='jobTitle' placeholder='e.g. Software Engineer' name='jobTitle' type='text' value={jobDetails.jobTitle} onChange={(e) => updateJobDetails('jobTitle', e.target.value)} />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label id='salary' label='Salary' className="block text-sm font-bold text-gray-700" />
-                                    <Input id='salary' placeholder='e.g. 8-10LPA' name='salary' type='text' value={jobDetails.salary} onChange={(e) => updateJobDetails('salary', e.target.value)} />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label id='experience' label='Experience' className="block text-sm font-bold text-gray-700" />
-                                    <Input id='experience' placeholder='e.g. 2-3 years, 0-2 years' name='experience' type='text' value={jobDetails.experience} onChange={(e) => updateJobDetails('experience', e.target.value)} />
-                                </div>
-                            </div>
-                            <div className="">
-                                <div className="space-y-2">
-                                    <Label id='jobDescription' label='Job Description' className="block text-sm font-bold text-gray-700" />
-                                    <textarea id='jobDescription' rows={5} cols={100} className='w-full border border-gray-300 rounded-lg p-3' placeholder='Enter Job Description here' name='jobDescription' value={jobDetails.jobDescription} onChange={(e) => updateJobDetails('jobDescription', e.target.value)} />
-                                </div>
+                            <div className="space-y-2">
+                                <Label id='jobLocation' label='Job Location' className="block text-sm font-bold text-gray-700" />
+                                <Input id='jobLocation' placeholder='e.g. Hyderabad, Bangalore, Remote' name='jobLocation' type='text' value={jobDetails.jobLocation} onChange={(e) => updateJobDetails('jobLocation', e.target.value)} />
                             </div>
                         </div>
-                    </Form>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label id='salary' label='Salary' className="block text-sm font-bold text-gray-700" />
+                                <Input id='salary' placeholder='e.g. 8-10LPA' name='salary' type='text' value={jobDetails.salary} onChange={(e) => updateJobDetails('salary', e.target.value)} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label id='experience' label='Experience' className="block text-sm font-bold text-gray-700" />
+                                <Input id='experience' placeholder='e.g. 2-3 years, 0-2 years' name='experience' type='text' value={jobDetails.experience} onChange={(e) => updateJobDetails('experience', e.target.value)} />
+                            </div>
+                        </div>
+                        <div className="">
+                            <div className="space-y-2">
+                                <Label id='jobDescription' label='Job Description' className="block text-sm font-bold text-gray-700" />
+                                <textarea id='jobDescription' rows={5} cols={100} className='w-full border border-gray-300 rounded-lg p-3' placeholder='Enter Job Description here' name='jobDescription' value={jobDetails.jobDescription} onChange={(e) => updateJobDetails('jobDescription', e.target.value)} />
+                            </div>
+                        </div>
+                    </div>
                 </Card>
                 <Card className='mt-10'>
                     <div className="mb-6">
@@ -229,7 +230,7 @@ export default function CreateJob({ submitJob }: Props) {
                         </div>
                     </div>
                 </Card>
-                <div className="">
+                <div className="mt-1.5">
                     <Button onClick={submitJob} className='!bg-blue-600 !hover:bg-blue-700 !text-white !font-bold !px-4 !py-2'>Publish Job</Button>
                 </div>
             </div>
