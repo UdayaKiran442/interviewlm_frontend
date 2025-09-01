@@ -6,20 +6,24 @@ import { H3, H4, H5, Tagline } from "./ui/Typography";
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Card } from './ui/Card';
-import { IJobState, IRoundState } from '@/types/types';
 import { ButtonSecondary } from './ui/Buttons';
 import { Rounds } from './ui/Rounds';
+import { ICreateJobPayload, IJobState, IRoundState } from '@/types/types';
+import { useSelector } from 'react-redux';
+import { createJobAPI } from '@/actions/job';
 
 
 export default function CreateJob() {
     const [jobDetails, setJobDetails] = useState<IJobState>({
         jobTitle: "",
-        jobLocation: "",
-        salary: "",
+        location: "",
+        package: "",
         experience: "",
         jobDescription: "",
     })
     const [rounds, setRounds] = useState<IRoundState[]>([])
+    const { user } = useSelector((state: any) => state.auth)
+
     function addRound() {
         setRounds(prevRounds => {
             const newRounds = [
@@ -55,10 +59,29 @@ export default function CreateJob() {
         });
     }
 
-    function submitJob() {
-        console.log(jobDetails, rounds);
+    async function submitJob() {
+        const screeningRound: IRoundState = {
+            roundType: "Resume Screening",
+            difficulty: null,
+            duration: null,
+            isAI: false,
+            questionType: null,
+            roundDescription: "",
+            roundName: "",
+            roundNumber: 1
+        }
+        const payload: ICreateJobPayload = {
+            ...jobDetails as IJobState,
+            companyId: user?.companyId,
+            department: "Engineering",
+            maximumApplications: null,
+            jobReviewers: [],
+            rounds: [...rounds, screeningRound]
+        }
+        // send payload to backend
+        const response = await createJobAPI(payload)
+        console.log(response);
     }
-
     return (
         <div className="min-h-screen w-full bg-gray-100">
             <div className="ml-[20%] flex flex-col">
@@ -79,13 +102,13 @@ export default function CreateJob() {
                             </div>
                             <div className="space-y-2">
                                 <Label id='jobLocation' label='Job Location' className="block text-sm font-bold text-gray-700" />
-                                <Input id='jobLocation' placeholder='e.g. Hyderabad, Bangalore, Remote' name='jobLocation' type='text' value={jobDetails.jobLocation} onChange={(e) => updateJobDetails('jobLocation', e.target.value)} />
+                                <Input id='jobLocation' placeholder='e.g. Hyderabad, Bangalore, Remote' name='jobLocation' type='text' value={jobDetails.location} onChange={(e) => updateJobDetails('location', e.target.value)} />
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label id='salary' label='Salary' className="block text-sm font-bold text-gray-700" />
-                                <Input id='salary' placeholder='e.g. 8-10LPA' name='salary' type='text' value={jobDetails.salary} onChange={(e) => updateJobDetails('salary', e.target.value)} />
+                                <Label id='package' label='Package' className="block text-sm font-bold text-gray-700" />
+                                <Input id='package' placeholder='e.g. 8-10LPA' name='package' type='text' value={jobDetails.package} onChange={(e) => updateJobDetails('package', e.target.value)} />
                             </div>
                             <div className="space-y-2">
                                 <Label id='experience' label='Experience' className="block text-sm font-bold text-gray-700" />
@@ -129,7 +152,7 @@ export default function CreateJob() {
                         </div>
                     </div>
                 </Card>
-                <div className="mt-1.5">
+                <div className="mt-1.5 mb-7">
                     <ButtonSecondary onClick={submitJob}>Publish Job</ButtonSecondary>
                 </div>
             </div>

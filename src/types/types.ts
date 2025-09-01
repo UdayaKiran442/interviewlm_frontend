@@ -45,17 +45,29 @@ export type IRoundState = {
     roundType: string;
     roundName: string;
     roundNumber: number;
-    questionType: string;
-    duration: number;
-    difficulty: string;
+    questionType: string | null;
+    duration: number | null;
+    difficulty: string | null;
     roundDescription: string | null;
     isAI: boolean;
 }
 
 export type IJobState = {
     jobTitle: string;
-    jobLocation: string;
-    salary: string;
+    location: string;
+    package: string;
     experience: string;
     jobDescription: string;
+}
+
+export type ICreateJobPayload = {
+    companyId: string;
+    jobTitle: string;
+    jobDescription: string;
+    department: string;
+    package: string | null;
+    location: string | null;
+    maximumApplications: number | null;
+    jobReviewers?: string[];
+    rounds: IRoundState[];
 }

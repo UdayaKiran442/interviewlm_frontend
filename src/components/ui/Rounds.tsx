@@ -57,7 +57,7 @@ export function Rounds({ rounds, updateRound }: { rounds: IRoundState[]; updateR
                                     name='duration'
                                     placeholder='e.g. 60'
                                     type='number'
-                                    value={round.duration}
+                                    value={round.duration ?? 0}
                                     onChange={(e) => updateRound(index, 'duration', e.target.value)}
                                 />
                             </div>
@@ -68,7 +68,7 @@ export function Rounds({ rounds, updateRound }: { rounds: IRoundState[]; updateR
                                 <Select
                                     id='difficulty'
                                     name='difficulty'
-                                    value={round.difficulty}
+                                    value={round.difficulty ?? "medium"}
                                     onChange={(e) => updateRound(index, 'difficulty', e.target.value)}
                                 >
                                     <option value="easy">Easy</option>
@@ -81,7 +81,7 @@ export function Rounds({ rounds, updateRound }: { rounds: IRoundState[]; updateR
                                 <Select
                                     id='questionType'
                                     name='questionType'
-                                    value={round.questionType}
+                                    value={round.questionType ?? "JD + Resume"}
                                     onChange={(e) => updateRound(index, 'questionType', e.target.value)}
                                 >
                                     <option value="JD + Resume">JD + Resume</option>

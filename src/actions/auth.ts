@@ -10,9 +10,6 @@ export async function loginUserAPI(payload: { userId: string; email: string }) {
             body: JSON.stringify(payload),
         });
         const response = await loginAPI.json();
-        if (!response.success) {
-            throw new Error(response.message);
-        }
         return response;
     } catch (error) {
         throw error;
