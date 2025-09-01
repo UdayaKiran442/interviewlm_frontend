@@ -1,6 +1,6 @@
 import { ICreateJobPayload } from "@/types/types";
 
-const BASE_URL = "http://localhost:3000/v1/jobs"
+const BASE_URL = "http://localhost:3000/v1/job"
 
 export async function createJobAPI(payload: ICreateJobPayload) {
     try {
@@ -14,6 +14,7 @@ export async function createJobAPI(payload: ICreateJobPayload) {
         const response = await createJobAPI.json()
         return response;
     } catch (error) {
-        throw error;
+        console.log(error);
+        return error;
     }
 }

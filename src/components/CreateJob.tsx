@@ -22,6 +22,8 @@ export default function CreateJob() {
         jobDescription: "",
     })
     const [rounds, setRounds] = useState<IRoundState[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const { user } = useSelector((state: any) => state.auth)
 
     function addRound() {
@@ -60,27 +62,40 @@ export default function CreateJob() {
     }
 
     async function submitJob() {
-        const screeningRound: IRoundState = {
-            roundType: "Resume Screening",
-            difficulty: null,
-            duration: null,
-            isAI: false,
-            questionType: null,
-            roundDescription: "",
-            roundName: "",
-            roundNumber: 1
+        try {
+            const screeningRound: IRoundState = {
+                roundType: "Resume Screening",
+                isAI: false,
+                roundName: "Resume Screening",
+                roundNumber: 1
+            }
+            const payload: ICreateJobPayload = {
+                ...jobDetails as IJobState,
+                companyId: user?.companyId,
+                department: "Engineering",
+                maximumApplications: null,
+                jobReviewers: [],
+                rounds: [...rounds, screeningRound]
+            }
+            // send payload to backend
+            setIsLoading(true)
+            const response = await createJobAPI(payload)
+            setIsLoading(false)
+            if (response.success) {
+                // popup success
+                setJobDetails({
+                    jobTitle: "",
+                    location: "",
+                    package: "",
+                    experience: "",
+                    jobDescription: "",
+                })
+                setRounds([])
+            }
+        } catch (error) {
+            // popup error
+            setIsLoading(false)
         }
-        const payload: ICreateJobPayload = {
-            ...jobDetails as IJobState,
-            companyId: user?.companyId,
-            department: "Engineering",
-            maximumApplications: null,
-            jobReviewers: [],
-            rounds: [...rounds, screeningRound]
-        }
-        // send payload to backend
-        const response = await createJobAPI(payload)
-        console.log(response);
     }
     return (
         <div className="min-h-screen w-full bg-gray-100">
@@ -132,7 +147,7 @@ export default function CreateJob() {
                         <div className='flex justify-between items-center'>
                             {/* title and button */}
                             <H5>Interview Rounds</H5>
-                            <ButtonSecondary onClick={addRound} className="flex items-center gap-2">
+                            <ButtonSecondary disabled={isLoading} onClick={addRound} className="flex items-center gap-2">
                                 <Plus size={16} />
                                 Add Round
                             </ButtonSecondary>
@@ -153,7 +168,7 @@ export default function CreateJob() {
                     </div>
                 </Card>
                 <div className="mt-1.5 mb-7">
-                    <ButtonSecondary onClick={submitJob}>Publish Job</ButtonSecondary>
+                    <ButtonSecondary disabled={isLoading} onClick={submitJob}>{isLoading ? "Publishing Job..." : "Publish Job"}</ButtonSecondary>
                 </div>
             </div>
         </div>

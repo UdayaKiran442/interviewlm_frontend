@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { redirect, usePathname } from "next/navigation";
 import { useAuth, SignInButton, SignUpButton, SignOutButton } from "@clerk/nextjs";
 import { Building2, Target, Users } from 'lucide-react'
@@ -23,13 +23,14 @@ export default function Navigation({
   const pathname = usePathname()
 
   const [activeButton, setActiveButton] = useState<string>(pathname.split(`/${user?.role}/`)[1] || 'jobs');
-  if (user) {
-    dispatch(setUser(user))
-  }
-
-  if (!isSignedIn) {
-    dispatch(setUser(null))
-  }
+  
+  useEffect(() => {
+    if (user) {
+      dispatch(setUser(user));
+    } else if (!isSignedIn) {
+      dispatch(setUser(null));
+    }
+  }, [user, isSignedIn, dispatch]);
 
   function signOut() {
     dispatch(setUser(null))

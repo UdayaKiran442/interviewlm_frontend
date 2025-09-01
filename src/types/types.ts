@@ -45,11 +45,11 @@ export type IRoundState = {
     roundType: string;
     roundName: string;
     roundNumber: number;
-    questionType: string | null;
-    duration: number | null;
-    difficulty: string | null;
-    roundDescription: string | null;
-    isAI: boolean;
+    questionType?: string;
+    duration?: number;
+    difficulty?: string;
+    roundDescription?: string;
+    isAI?: boolean;
 }
 
 export type IJobState = {
