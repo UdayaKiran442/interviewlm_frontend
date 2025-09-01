@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { redirect, usePathname } from "next/navigation";
 import { useAuth, SignInButton, SignUpButton, SignOutButton } from "@clerk/nextjs";
-import { Building2, Target, Users } from 'lucide-react'
+import { Building2, Target, UserCheck, Users } from 'lucide-react'
 
 import logo from "../../public/logo.png";
 import { setUser } from "@/lib/features/authSlice";
@@ -23,7 +23,7 @@ export default function Navigation({
   const pathname = usePathname()
 
   const [activeButton, setActiveButton] = useState<string>(pathname.split(`/${user?.role}/`)[1] || 'jobs');
-  
+
   useEffect(() => {
     if (user) {
       dispatch(setUser(user));
@@ -70,6 +70,13 @@ export default function Navigation({
                 <NavigationButton className={activeButton === 'validation' ? '!bg-blue-600 !py-2 hover:!bg-blue-500 !text-white border-2 !border-gray-200 !rounded-xl' : ''} onClick={() => setActiveButton('validation')}>
                   <Target className="mr-2" />
                   <span>Validation</span>
+                </NavigationButton>
+                <NavigationButton className={activeButton === 'manage-reviewers' ? '!bg-blue-600 !py-2 hover:!bg-blue-500 !text-white border-2 !border-gray-200 !rounded-xl' : ''} onClick={() => {
+                  setActiveButton('manage-reviewers');
+                  redirect('/hr/manage-reviewers');
+                }}>
+                  <UserCheck className="mr-2" />
+                  <span>Manage Reviewers</span>
                 </NavigationButton>
               </>
             )}

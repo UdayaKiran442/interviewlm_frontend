@@ -35,7 +35,7 @@ export default function CreateJob() {
                     roundType: "Technical Interview",
                     difficulty: "medium",
                     duration: 60,
-                    isAI: false,
+                    isAI: true,
                     questionType: "JD + Resume",
                     roundDescription: "",
                     roundName: "",
