@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Plus, Info } from 'lucide-react'
 
-import { H3, H4, H5, Tagline } from "./ui/Typography";
+import { H2, H3, H4, H5, Tagline } from "./ui/Typography";
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Card } from './ui/Card';
@@ -20,6 +20,7 @@ export default function CreateJob() {
         package: "",
         experience: "",
         jobDescription: "",
+        maximumApplications: null
     })
     const [rounds, setRounds] = useState<IRoundState[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -73,10 +74,10 @@ export default function CreateJob() {
                 ...jobDetails as IJobState,
                 companyId: user?.companyId,
                 department: "Engineering",
-                maximumApplications: null,
                 jobReviewers: [],
                 rounds: [...rounds, screeningRound]
             }
+            console.log(payload)
             // send payload to backend
             setIsLoading(true)
             const response = await createJobAPI(payload)
@@ -89,6 +90,7 @@ export default function CreateJob() {
                     package: "",
                     experience: "",
                     jobDescription: "",
+                    maximumApplications: null
                 })
                 setRounds([])
             }
@@ -164,6 +166,16 @@ export default function CreateJob() {
                         <div>
                             {/* Rounds info */}
                             <Rounds rounds={rounds} updateRound={updateRound} />
+                        </div>
+                    </div>
+                </Card>
+                <Card className='mt-10'>
+                    <H3>Application Settings</H3>
+                    <Tagline>Configure application limits and filtering</Tagline>
+                    <div className="mt-5 grid grid-cols-1 gap-6">
+                        <div>
+                            <Label id='maximumApplications' label='Maximum Applications' />
+                            <Input id='maximumApplications' placeholder='e.g. 10' name='maximumApplications' type='number' value={jobDetails.maximumApplications ?? 0} onChange={(e) => updateJobDetails('maximumApplications', e.target.value)} />
                         </div>
                     </div>
                 </Card>
