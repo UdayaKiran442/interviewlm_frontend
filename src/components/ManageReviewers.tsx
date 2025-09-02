@@ -1,11 +1,13 @@
 "use client"
 
-import { UserPlus } from "lucide-react";
-import { ButtonSecondary } from "./ui/Buttons";
+import { Link2, Mail, Phone, UserPlus } from "lucide-react";
+import Button, { ButtonSecondary } from "./ui/Buttons";
 import { Card } from "./ui/Card";
 import { Input } from "./ui/Input";
 import { Label } from "./ui/Label";
-import { H3, H4, Tagline } from "./ui/Typography";
+import { H3, H4, H5, Tagline } from "./ui/Typography";
+import ProfileIcon from "./ui/ProfileIcon";
+import TitleCapsule from "./ui/TitleCapsule";
 
 
 export default function ManageReviewers() {
@@ -15,13 +17,13 @@ export default function ManageReviewers() {
                 <H3 className="text-blue-600">Manage Reviewers</H3>
                 <Tagline>Add and manage reviewers for candidate evaluations</Tagline>
             </div>
-            <div className="grid md:grid-cols-2 grid-cols-1 mt-3.5 gap-4">
+            <div className="grid md:grid-cols-2 grid-cols-1 mt-3.5">
                 <div>
                     <Card className="rounded-xl w-[75%]">
                         <H4>Add New Reviewer</H4>
                         <Tagline>Enter reviewer details to add them to the system</Tagline>
-                        <div className="mt-4">
-                            <div className="border-t-4 border-gray-500">
+                        <div>
+                            <div className="pt-4">
                                 <Label id="name" label="Name" className="mb-1.5" />
                                 <Input id="name" type="text" placeholder="e.g. John Doe" name="name" />
                             </div>
@@ -47,7 +49,52 @@ export default function ManageReviewers() {
                     </Card>
                 </div>
                 <div>
-                    Manage Reviewers
+                    <Card className="rounded-xl">
+                        <H4>Reviewer Directory</H4>
+                        <Tagline>Manage and view all reviewers</Tagline>
+                        <div>
+                            <div className="mt-10 flex justify-between items-center">
+                                <div className="flex items-center gap-2">
+                                    {/* profile icon */}
+                                    <ProfileIcon name="KD" />
+                                    <div>
+                                        {/* profile details */}
+                                        <div className="flex items-center gap-2">
+                                            {/* name */}
+                                            <H5>Krishna Dev</H5>
+                                            {/* job title */}
+                                            <TitleCapsule title="Software Engineer" />
+                                        </div>
+                                        <div className="flex items-center gap-5">
+                                            {/* phone */}
+                                            <Tagline className="text-[0.75rem] flex items-center justify-center gap-1">
+                                                <Phone size={12} />
+                                                123-456-7890
+                                            </Tagline>
+                                            {/* email */}
+                                            <Tagline className="text-[0.75rem] flex items-center justify-center gap-1">
+                                                <Mail size={12} />
+                                                john.doe@example.com
+                                            </Tagline>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    {/* action buttons */}
+                                    <Button className="px-6 py-1 flex items-center gap-2 hover:!bg-blue-200">
+                                        <Link2 size={16} />
+                                        Assign Job
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="mt-5">
+                                <Tagline className="text-sm">Assigned to 2 jobs:</Tagline>
+                                <div>
+                                    {/* job title capsule */}
+                                </div>
+                            </div>
+                        </div>
+                    </Card>
                 </div>
             </div>
         </div>

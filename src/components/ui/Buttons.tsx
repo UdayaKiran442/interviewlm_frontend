@@ -3,12 +3,10 @@ import { cn } from "@/lib/utils";
 export default function Button({
   children,
   className,
-  disabled,
   onClick,
 }: {
   children: React.ReactNode;
   className?: string;
-  disabled: boolean;
   onClick?: () => void;
 }) {
   return (
