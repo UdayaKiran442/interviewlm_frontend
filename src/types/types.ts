@@ -72,3 +72,23 @@ export type ICreateJobPayload = {
     jobReviewers?: string[];
     rounds: IRoundState[];
 }
+
+export type IReviewer = {
+    reviewerId: string;
+    name: string;
+    email: string;
+    phone: string | null;
+    reviewerJobTitle: string;
+    jobs: [
+        {
+            jobId: string;
+            jobTitle: string
+        }
+    ]
+}
+
+export type IGetReviewersForCompanyAPIResponse = {
+    success: boolean;
+    message: string;
+    reviewers: IReviewer[];
+}

@@ -8,9 +8,10 @@ import { Label } from "./ui/Label";
 import { H3, H4, H5, Tagline } from "./ui/Typography";
 import ProfileIcon from "./ui/ProfileIcon";
 import TitleCapsule from "./ui/TitleCapsule";
+import { IReviewer } from "@/types/types";
 
 
-export default function ManageReviewers() {
+export default function ManageReviewers({ reviewers }: { reviewers: IReviewer[] }) {
     return (
         <div className="p-6 min-h-screen w-full bg-gray-100">
             <div>
@@ -52,48 +53,57 @@ export default function ManageReviewers() {
                     <Card className="rounded-xl">
                         <H4>Reviewer Directory</H4>
                         <Tagline>Manage and view all reviewers</Tagline>
-                        <div>
-                            <div className="mt-10 flex justify-between items-center">
-                                <div className="flex items-center gap-2">
-                                    {/* profile icon */}
-                                    <ProfileIcon name="KD" />
-                                    <div>
-                                        {/* profile details */}
-                                        <div className="flex items-center gap-2">
-                                            {/* name */}
-                                            <H5>Krishna Dev</H5>
-                                            {/* job title */}
-                                            <TitleCapsule title="Software Engineer" />
-                                        </div>
-                                        <div className="flex items-center gap-5">
-                                            {/* phone */}
-                                            <Tagline className="text-[0.75rem] flex items-center justify-center gap-1">
-                                                <Phone size={12} />
-                                                123-456-7890
-                                            </Tagline>
-                                            {/* email */}
-                                            <Tagline className="text-[0.75rem] flex items-center justify-center gap-1">
-                                                <Mail size={12} />
-                                                john.doe@example.com
-                                            </Tagline>
+                        {reviewers.map((reviewer) => (
+                            <div key={reviewer.reviewerId}>
+                                <div className="mt-10 flex justify-between items-center">
+                                    <div className="flex items-center gap-2">
+                                        {/* profile icon */}
+                                        <ProfileIcon name="KD" />
+                                        <div>
+                                            {/* profile details */}
+                                            <div className="flex items-center gap-2">
+                                                {/* name */}
+                                                <H5>{reviewer.name}</H5>
+                                                {/* job title */}
+                                                <TitleCapsule title={reviewer.reviewerJobTitle} />
+                                            </div>
+                                            <div className="flex items-center gap-5">
+                                                {/* phone */}
+                                                <Tagline className="text-[0.75rem] flex items-center justify-center gap-1">
+                                                    <Phone size={12} />
+                                                    {reviewer.phone && reviewer.phone}
+                                                </Tagline>
+                                                {/* email */}
+                                                <Tagline className="text-[0.75rem] flex items-center justify-center gap-1">
+                                                    <Mail size={12} />
+                                                    {reviewer.email}
+                                                </Tagline>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div>
+                                        {/* action buttons */}
+                                        <Button className="px-6 py-1 flex items-center gap-2 hover:!bg-blue-200">
+                                            <Link2 size={16} />
+                                            Assign Job
+                                        </Button>
+                                    </div>
                                 </div>
-                                <div>
-                                    {/* action buttons */}
-                                    <Button className="px-6 py-1 flex items-center gap-2 hover:!bg-blue-200">
-                                        <Link2 size={16} />
-                                        Assign Job
-                                    </Button>
+                                <div className="mt-5">
+                                    <Tagline className="text-sm">Assigned to {reviewer.jobs.length} jobs:</Tagline>
+                                    <div>
+                                        {/* job title capsule */}
+                                        {reviewer.jobs.map((job) => (
+                                            <div className="flex gap-1 mt-1.5" key={job.jobId}>
+                                                <TitleCapsule title={job.jobTitle} />
+                                            </div>
+                                        ))}
+
+                                    </div>
                                 </div>
                             </div>
-                            <div className="mt-5">
-                                <Tagline className="text-sm">Assigned to 2 jobs:</Tagline>
-                                <div>
-                                    {/* job title capsule */}
-                                </div>
-                            </div>
-                        </div>
+                        ))}
+
                     </Card>
                 </div>
             </div>
