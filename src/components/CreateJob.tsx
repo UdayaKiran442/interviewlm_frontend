@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Plus, Info } from 'lucide-react'
 
-import { H2, H3, H4, H5, Tagline } from "./ui/Typography";
+import { H3, H4, H5, Tagline } from "./ui/Typography";
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Card } from './ui/Card';
@@ -11,6 +11,7 @@ import { Rounds } from './ui/Rounds';
 import { ICreateJobPayload, IJobState, IRoundState } from '@/types/types';
 import { useSelector } from 'react-redux';
 import { createJobAPI } from '@/actions/job';
+import { SearchDropDown } from './ui/SearchDropdown';
 
 
 export default function CreateJob() {
@@ -20,7 +21,8 @@ export default function CreateJob() {
         package: "",
         experience: "",
         jobDescription: "",
-        maximumApplications: null
+        maximumApplications: null,
+        jobReviewers: []
     })
     const [rounds, setRounds] = useState<IRoundState[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -137,6 +139,9 @@ export default function CreateJob() {
                                 <Label id='jobDescription' label='Job Description' className="block text-sm font-bold text-gray-700" />
                                 <textarea id='jobDescription' rows={5} cols={100} className='w-full border border-gray-300 rounded-lg p-3' placeholder='Enter Job Description here' name='jobDescription' value={jobDetails.jobDescription} onChange={(e) => updateJobDetails('jobDescription', e.target.value)} />
                             </div>
+                        </div>
+                        <div>
+                            <SearchDropDown jobDetails={jobDetails} setJobDetails={setJobDetails} />
                         </div>
                     </div>
                 </Card>

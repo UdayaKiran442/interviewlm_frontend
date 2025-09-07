@@ -1,3 +1,4 @@
+import { Bot } from "lucide-react";
 import { IRoundState } from "@/types/types";
 import { Card } from "./Card";
 import { Brain, Clock, Trash } from "lucide-react";
@@ -5,7 +6,6 @@ import { H5, Tagline } from "./Typography";
 import { Label } from "./Label";
 import { Select } from "./Select";
 import { Input } from "./Input";
-import { Bot } from "lucide-react";
 
 export function Rounds({ rounds, updateRound }: { rounds: IRoundState[]; updateRound: (index: number, field: keyof IRoundState, value: any) => void }) {
     return (
@@ -90,7 +90,7 @@ export function Rounds({ rounds, updateRound }: { rounds: IRoundState[]; updateR
                             </div>
                         </div>
                         <div className="flex items-center space-x-2 mt-4">
-                            <input onChange={(e) => updateRound(index, 'isAI', e.target.checked)} type="checkbox" id="isAI" name="isAI" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                            <input onChange={(e) => updateRound(index, 'isAI', e.target.checked)} checked={round.isAI ?? true} type="checkbox" id="isAI" name="isAI" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
                             <Bot className="h-4 w-4 text-blue-500" />
                             <Label id="isAI" className='-ml-1.5' label="AI-Powered Interview" />
                         </div>

@@ -59,6 +59,7 @@ export type IJobState = {
     experience: string;
     jobDescription: string;
     maximumApplications: number | null;
+    jobReviewers?: string[];
 }
 
 export type ICreateJobPayload = {
@@ -103,4 +104,9 @@ export type IAddReviewer = {
 export type IResponse = {
     success: boolean
     message: string
+}
+
+export type ISearchReviewerAPIResponse = {
+    success: boolean;
+    reviewers: IReviewer[]
 }
