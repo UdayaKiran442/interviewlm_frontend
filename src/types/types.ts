@@ -92,3 +92,15 @@ export type IGetReviewersForCompanyAPIResponse = {
     message: string;
     reviewers: IReviewer[];
 }
+
+export type IAddReviewer = {
+    name: string;
+    email: string;
+    phone: string;
+    jobTitle: string;
+}
+
+export type IResponse = {
+    success: boolean
+    message: string
+}
