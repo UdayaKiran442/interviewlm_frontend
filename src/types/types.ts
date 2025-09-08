@@ -59,7 +59,7 @@ export type IJobState = {
     experience: string;
     jobDescription: string;
     maximumApplications: number | null;
-    jobReviewers?: string[];
+    jobReviewers: string[];
 }
 
 export type ICreateJobPayload = {
