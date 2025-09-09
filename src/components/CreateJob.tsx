@@ -1,6 +1,6 @@
 "use client";
 import { ChangeEvent, useState } from "react";
-import { Plus, Info } from "lucide-react";
+import { Plus, Info, CrossIcon } from "lucide-react";
 
 import { H3, H4, H5, Tagline } from "./ui/Typography";
 import { Input } from "./ui/Input";
@@ -9,323 +9,350 @@ import { Card } from "./ui/Card";
 import { ButtonSecondary } from "./ui/Buttons";
 import { Rounds } from "./ui/Rounds";
 import {
-    ICreateJobPayload,
-    IJobState,
-    IReviewer,
-    IRoundState,
+  ICreateJobPayload,
+  IJobState,
+  IReviewer,
+  IRoundState,
 } from "@/types/types";
 import { useSelector } from "react-redux";
 import { createJobAPI } from "@/actions/job";
 import { searchReviewersAPI } from "@/actions/reviewers";
 
 export default function CreateJob() {
-    const [jobDetails, setJobDetails] = useState<IJobState>({
-        jobTitle: "",
-        location: "",
-        package: "",
-        experience: "",
-        jobDescription: "",
-        maximumApplications: null,
-        jobReviewers: [],
+  const [jobDetails, setJobDetails] = useState<IJobState>({
+    jobTitle: "",
+    location: "",
+    package: "",
+    experience: "",
+    jobDescription: "",
+    maximumApplications: null,
+    jobReviewers: [],
+  });
+  const [reviewer, setReviewer] = useState<IReviewer[]>();
+  const [selectedReviewer, setSelectedReviewer] = useState<IReviewer[]>();
+  const [rounds, setRounds] = useState<IRoundState[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { user } = useSelector((state: any) => state.auth);
+
+  async function searchReviewer(e: ChangeEvent<HTMLInputElement>) {
+    try {
+      const searchName = e.target.value;
+      const reviewer = await searchReviewersAPI({ searchName });
+      setReviewer(reviewer.reviewers);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleSelectReviewer(selected: IReviewer) {
+    setJobDetails((prevJobDetails) => {
+      // Create a new array with the existing reviewers plus the new one
+      const updatedReviewers = [
+        ...prevJobDetails.jobReviewers,
+        selected.reviewerId,
+      ];
+      const updatedJobDetails = {
+        ...prevJobDetails,
+        jobReviewers: updatedReviewers,
+      };
+
+      // Log the updated state (this will show the correct value)
+
+      return updatedJobDetails;
     });
-    const [reviewer, setReviewer] = useState<IReviewer[]>();
-    const [rounds, setRounds] = useState<IRoundState[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const { user } = useSelector((state: any) => state.auth);
+    setSelectedReviewer((prevSelectedReviewer) => {
+      // Create a new array with the existing reviewers plus the new one
+      const updatedSelectedReviewer = [
+        ...(prevSelectedReviewer ?? []),
+        selected,
+      ];
+      return updatedSelectedReviewer;
+    });
 
-    async function searchReviewer(e: ChangeEvent<HTMLInputElement>) {
-        try {
-            const searchName = e.target.value;
-            const reviewer = await searchReviewersAPI({ searchName });
-            setReviewer(reviewer.reviewers);
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // Clear the reviewer search results
+    setReviewer([]);
+  }
 
-    function handleSelectReviewer(selected: IReviewer) {
-        setJobDetails((prevJobDetails) => {
-            // Create a new array with the existing reviewers plus the new one
-            const updatedReviewers = [
-                ...prevJobDetails.jobReviewers,
-                selected.reviewerId,
-            ];
-            const updatedJobDetails = {
-                ...prevJobDetails,
-                jobReviewers: updatedReviewers,
-            };
+  function addRound() {
+    setRounds((prevRounds) => {
+      const newRounds = [
+        ...prevRounds,
+        {
+          roundType: "Technical Interview",
+          difficulty: "medium",
+          duration: 60,
+          isAI: true,
+          questionType: "JD + Resume",
+          roundDescription: "",
+          roundName: "",
+          roundNumber: prevRounds.length + 2,
+        },
+      ];
+      return newRounds;
+    });
+  }
 
-            // Log the updated state (this will show the correct value)
+  function updateRound(index: number, field: keyof IRoundState, value: any) {
+    setRounds((prevRounds) => {
+      const updatedRounds = prevRounds.map((round, i) =>
+        i === index ? { ...round, [field]: value } : round
+      );
+      return updatedRounds;
+    });
+  }
 
-            return updatedJobDetails;
+  function updateJobDetails(
+    field: keyof IJobState,
+    value: string | number | null
+  ) {
+    setJobDetails((prevJobDetails) => {
+      const updatedJobDetails = { ...prevJobDetails, [field]: value };
+      return updatedJobDetails;
+    });
+  }
+
+  async function submitJob() {
+    try {
+      const screeningRound: IRoundState = {
+        roundType: "Resume Screening",
+        isAI: false,
+        roundName: "Resume Screening",
+        roundNumber: 1,
+      };
+      const payload: ICreateJobPayload = {
+        ...(jobDetails as IJobState),
+        companyId: user?.companyId,
+        department: "Engineering",
+        jobReviewers: [],
+        rounds: [...rounds, screeningRound],
+      };
+      // send payload to backend
+      setIsLoading(true);
+      const response = await createJobAPI(payload);
+      setIsLoading(false);
+      if (response.success) {
+        // popup success
+        setJobDetails({
+          jobTitle: "",
+          location: "",
+          package: "",
+          experience: "",
+          jobDescription: "",
+          maximumApplications: null,
+          jobReviewers: [],
         });
-
-        // Clear the reviewer search results
-        setReviewer([]);
+        setRounds([]);
+      }
+    } catch (error) {
+      // popup error
+      setIsLoading(false);
+      console.log(error);
     }
-
-    function addRound() {
-        setRounds((prevRounds) => {
-            const newRounds = [
-                ...prevRounds,
-                {
-                    roundType: "Technical Interview",
-                    difficulty: "medium",
-                    duration: 60,
-                    isAI: true,
-                    questionType: "JD + Resume",
-                    roundDescription: "",
-                    roundName: "",
-                    roundNumber: prevRounds.length + 2,
-                },
-            ];
-            return newRounds;
-        });
-    }
-
-    function updateRound(index: number, field: keyof IRoundState, value: any) {
-        setRounds((prevRounds) => {
-            const updatedRounds = prevRounds.map((round, i) =>
-                i === index ? { ...round, [field]: value } : round
-            );
-            return updatedRounds;
-        });
-    }
-
-    function updateJobDetails(field: keyof IJobState, value: any) {
-        setJobDetails((prevJobDetails) => {
-            const updatedJobDetails = { ...prevJobDetails, [field]: value };
-            return updatedJobDetails;
-        });
-    }
-
-    async function submitJob() {
-        try {
-            const screeningRound: IRoundState = {
-                roundType: "Resume Screening",
-                isAI: false,
-                roundName: "Resume Screening",
-                roundNumber: 1,
-            };
-            const payload: ICreateJobPayload = {
-                ...(jobDetails as IJobState),
-                companyId: user?.companyId,
-                department: "Engineering",
-                jobReviewers: [],
-                rounds: [...rounds, screeningRound],
-            };
-            // send payload to backend
-            setIsLoading(true)
-            const response = await createJobAPI(payload)
-            setIsLoading(false)
-            if (response.success) {
-                // popup success
-                setJobDetails({
-                    jobTitle: "",
-                    location: "",
-                    package: "",
-                    experience: "",
-                    jobDescription: "",
-                    maximumApplications: null,
-                    jobReviewers: []
-                })
-                setRounds([])
-            }
-        } catch (error) {
-            // popup error
-            setIsLoading(false);
-        }
-    }
-    return (
-        <div className="min-h-screen w-full bg-gray-100">
-            <div className="ml-[20%] flex flex-col">
-                <div className="p-4">
-                    <H3>Create New Job Posting</H3>
-                    <Tagline>Configure your job posting and interview process</Tagline>
-                </div>
-                <Card>
-                    <div className="mb-6">
-                        <H4>Job Details</H4>
-                        <Tagline>Basic information about the position</Tagline>
-                    </div>
-                    <div className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label
-                                    id="jobTitle"
-                                    label="Job Title"
-                                    className="block text-sm font-bold text-gray-700"
-                                />
-                                <Input
-                                    id="jobTitle"
-                                    placeholder="e.g. Software Engineer"
-                                    name="jobTitle"
-                                    type="text"
-                                    value={jobDetails.jobTitle}
-                                    onChange={(e) => updateJobDetails("jobTitle", e.target.value)}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label
-                                    id="jobLocation"
-                                    label="Job Location"
-                                    className="block text-sm font-bold text-gray-700"
-                                />
-                                <Input
-                                    id="jobLocation"
-                                    placeholder="e.g. Hyderabad, Bangalore, Remote"
-                                    name="jobLocation"
-                                    type="text"
-                                    value={jobDetails.location}
-                                    onChange={(e) => updateJobDetails("location", e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label
-                                    id="package"
-                                    label="Package"
-                                    className="block text-sm font-bold text-gray-700"
-                                />
-                                <Input
-                                    id="package"
-                                    placeholder="e.g. 8-10LPA"
-                                    name="package"
-                                    type="text"
-                                    value={jobDetails.package}
-                                    onChange={(e) => updateJobDetails("package", e.target.value)}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label
-                                    id="experience"
-                                    label="Experience"
-                                    className="block text-sm font-bold text-gray-700"
-                                />
-                                <Input
-                                    id="experience"
-                                    placeholder="e.g. 2-3 years, 0-2 years"
-                                    name="experience"
-                                    type="text"
-                                    value={jobDetails.experience}
-                                    onChange={(e) =>
-                                        updateJobDetails("experience", e.target.value)
-                                    }
-                                />
-                            </div>
-                        </div>
-                        <div className="">
-                            <div className="space-y-2">
-                                <Label
-                                    id="jobDescription"
-                                    label="Job Description"
-                                    className="block text-sm font-bold text-gray-700"
-                                />
-                                <textarea
-                                    id="jobDescription"
-                                    rows={5}
-                                    cols={100}
-                                    className="w-full border border-gray-300 rounded-lg p-3"
-                                    placeholder="Enter Job Description here"
-                                    name="jobDescription"
-                                    value={jobDetails.jobDescription}
-                                    onChange={(e) =>
-                                        updateJobDetails("jobDescription", e.target.value)
-                                    }
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <div className="space-y-2">
-                                <Label id="reviewer" label="Assign Reviewer" />
-                                <Input
-                                    name="reviewer"
-                                    id="reviewer"
-                                    placeholder="Assign reviewer"
-                                    type="text"
-                                    className="mt-1"
-                                    onChange={(e) => searchReviewer(e)}
-                                />
-                                {reviewer && reviewer.length > 0 && (
-                                    <div>
-                                        {reviewer.map((reviewer) => (
-                                            <div
-                                                onClick={() => handleSelectReviewer(reviewer)}
-                                                key={reviewer.reviewerId}
-                                                className="p-2 border-b cursor-pointer hover:bg-gray-100 flex items-center gap-2"
-                                            >
-                                                <p>{reviewer.name}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </Card>
-                <Card className="mt-10">
-                    <div className="mb-6">
-                        <H3>Interview Process</H3>
-                        <Tagline>Configure interview rounds and assessments</Tagline>
-                    </div>
-                    <div>
-                        <div className="flex justify-between items-center">
-                            {/* title and button */}
-                            <H5>Interview Rounds</H5>
-                            <ButtonSecondary
-                                disabled={isLoading}
-                                onClick={addRound}
-                                className="flex items-center gap-2"
-                            >
-                                <Plus size={16} />
-                                Add Round
-                            </ButtonSecondary>
-                        </div>
-                        {/* Tagline */}
-                        <Tagline className="!-mt-2 !text-sm">
-                            Design your interview process by adding and configuring different
-                            assessment stages.
-                        </Tagline>
-                        <div>
-                            {/* round 1 info */}
-                            <Tagline className="!text-[0.8rem] !flex !items-center !gap-1">
-                                <Info size={10} />
-                                Round 1 is automatically set as resume screening
-                            </Tagline>
-                        </div>
-                        <div>
-                            {/* Rounds info */}
-                            <Rounds rounds={rounds} updateRound={updateRound} />
-                        </div>
-                    </div>
-                </Card>
-                <Card className="mt-10">
-                    <H3>Application Settings</H3>
-                    <Tagline>Configure application limits and filtering</Tagline>
-                    <div className="mt-5 grid grid-cols-1 gap-6">
-                        <div>
-                            <Label id="maximumApplications" label="Maximum Applications" />
-                            <Input
-                                id="maximumApplications"
-                                placeholder="e.g. 10"
-                                name="maximumApplications"
-                                type="number"
-                                value={jobDetails.maximumApplications ?? 0}
-                                onChange={(e) =>
-                                    updateJobDetails("maximumApplications", e.target.value)
-                                }
-                            />
-                        </div>
-                    </div>
-                </Card>
-                <div className="mt-1.5 mb-7">
-                    <ButtonSecondary disabled={isLoading} onClick={submitJob}>
-                        {isLoading ? "Publishing Job..." : "Publish Job"}
-                    </ButtonSecondary>
-                </div>
-            </div>
+  }
+  return (
+    <div className="min-h-screen w-full bg-gray-100">
+      <div className="ml-[20%] flex flex-col">
+        <div className="p-4">
+          <H3>Create New Job Posting</H3>
+          <Tagline>Configure your job posting and interview process</Tagline>
         </div>
-    );
+        <Card>
+          <div className="mb-6">
+            <H4>Job Details</H4>
+            <Tagline>Basic information about the position</Tagline>
+          </div>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label
+                  id="jobTitle"
+                  label="Job Title"
+                  className="block text-sm font-bold text-gray-700"
+                />
+                <Input
+                  id="jobTitle"
+                  placeholder="e.g. Software Engineer"
+                  name="jobTitle"
+                  type="text"
+                  value={jobDetails.jobTitle}
+                  onChange={(e) => updateJobDetails("jobTitle", e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label
+                  id="jobLocation"
+                  label="Job Location"
+                  className="block text-sm font-bold text-gray-700"
+                />
+                <Input
+                  id="jobLocation"
+                  placeholder="e.g. Hyderabad, Bangalore, Remote"
+                  name="jobLocation"
+                  type="text"
+                  value={jobDetails.location}
+                  onChange={(e) => updateJobDetails("location", e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label
+                  id="package"
+                  label="Package"
+                  className="block text-sm font-bold text-gray-700"
+                />
+                <Input
+                  id="package"
+                  placeholder="e.g. 8-10LPA"
+                  name="package"
+                  type="text"
+                  value={jobDetails.package}
+                  onChange={(e) => updateJobDetails("package", e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label
+                  id="experience"
+                  label="Experience"
+                  className="block text-sm font-bold text-gray-700"
+                />
+                <Input
+                  id="experience"
+                  placeholder="e.g. 2-3 years, 0-2 years"
+                  name="experience"
+                  type="text"
+                  value={jobDetails.experience}
+                  onChange={(e) =>
+                    updateJobDetails("experience", e.target.value)
+                  }
+                />
+              </div>
+            </div>
+            <div className="">
+              <div className="space-y-2">
+                <Label
+                  id="jobDescription"
+                  label="Job Description"
+                  className="block text-sm font-bold text-gray-700"
+                />
+                <textarea
+                  id="jobDescription"
+                  rows={5}
+                  cols={100}
+                  className="w-full border border-gray-300 rounded-lg p-3"
+                  placeholder="Enter Job Description here"
+                  name="jobDescription"
+                  value={jobDetails.jobDescription}
+                  onChange={(e) =>
+                    updateJobDetails("jobDescription", e.target.value)
+                  }
+                />
+              </div>
+            </div>
+            <div>
+              <div className="space-y-2">
+                <Label id="reviewer" label="Assign Reviewer" />
+                <Input
+                  name="reviewer"
+                  id="reviewer"
+                  placeholder="Assign reviewer"
+                  type="text"
+                  className="mt-1"
+                  onChange={(e) => searchReviewer(e)}
+                />
+                {reviewer && reviewer.length > 0 && (
+                  <div>
+                    {reviewer.map((reviewer) => (
+                      <div
+                        onClick={() => handleSelectReviewer(reviewer)}
+                        key={reviewer.reviewerId}
+                        className="p-2 border-b cursor-pointer hover:bg-gray-100 flex items-center gap-2"
+                      >
+                        <p>{reviewer.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {selectedReviewer && selectedReviewer.length > 0 && (
+                  <div>
+                    {selectedReviewer.map((reviewer) => (
+                      <div
+                        key={reviewer.reviewerId}
+                        className="flex items-center gap-2 rounded-xl bg-gray-300 p-2 w-fit"
+                      >
+                        <CrossIcon />
+                        <p>{reviewer.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </Card>
+        <Card className="mt-10">
+          <div className="mb-6">
+            <H3>Interview Process</H3>
+            <Tagline>Configure interview rounds and assessments</Tagline>
+          </div>
+          <div>
+            <div className="flex justify-between items-center">
+              {/* title and button */}
+              <H5>Interview Rounds</H5>
+              <ButtonSecondary
+                disabled={isLoading}
+                onClick={addRound}
+                className="flex items-center gap-2"
+              >
+                <Plus size={16} />
+                Add Round
+              </ButtonSecondary>
+            </div>
+            {/* Tagline */}
+            <Tagline className="!-mt-2 !text-sm">
+              Design your interview process by adding and configuring different
+              assessment stages.
+            </Tagline>
+            <div>
+              {/* round 1 info */}
+              <Tagline className="!text-[0.8rem] !flex !items-center !gap-1">
+                <Info size={10} />
+                Round 1 is automatically set as resume screening
+              </Tagline>
+            </div>
+            <div>
+              {/* Rounds info */}
+              <Rounds rounds={rounds} updateRound={updateRound} />
+            </div>
+          </div>
+        </Card>
+        <Card className="mt-10">
+          <H3>Application Settings</H3>
+          <Tagline>Configure application limits and filtering</Tagline>
+          <div className="mt-5 grid grid-cols-1 gap-6">
+            <div>
+              <Label id="maximumApplications" label="Maximum Applications" />
+              <Input
+                id="maximumApplications"
+                placeholder="e.g. 10"
+                name="maximumApplications"
+                type="number"
+                value={jobDetails.maximumApplications ?? 0}
+                onChange={(e) =>
+                  updateJobDetails("maximumApplications", e.target.value)
+                }
+              />
+            </div>
+          </div>
+        </Card>
+        <div className="mt-1.5 mb-7">
+          <ButtonSecondary disabled={isLoading} onClick={submitJob}>
+            {isLoading ? "Publishing Job..." : "Publish Job"}
+          </ButtonSecondary>
+        </div>
+      </div>
+    </div>
+  );
 }
