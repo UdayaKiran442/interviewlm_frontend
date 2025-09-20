@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { ChangeEvent, useState } from "react";
 import { Plus, Info, CrossIcon } from "lucide-react";

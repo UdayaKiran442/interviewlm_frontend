@@ -22,7 +22,8 @@ export type IJob = {
     jobTitle: string;
     jobDescription: string;
     department: string;
-    package: string;
+    package: string | null;
+    location: string | null;
     maximumApplications: number;
     applications: number;
     inProgress: number;
