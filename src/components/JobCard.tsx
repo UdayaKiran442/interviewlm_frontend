@@ -1,3 +1,5 @@
+import { redirect, RedirectType } from "next/navigation";
+
 import { IJob } from "@/types/types";
 import React from "react";
 import ProfileIcon from "./ui/ProfileIcon";
@@ -65,7 +67,10 @@ export default function JobCard({
       </div>
       {/* actions */}
       <div className="mt-5">
-        <ButtonSecondary className="flex items-center gap-2">
+        <ButtonSecondary
+          onClick={() => redirect(`/hr/job/${job.jobId}`, RedirectType.push)}
+          className="flex items-center gap-2"
+        >
           <Users size={20} />
           View Applicants ({length})
         </ButtonSecondary>
