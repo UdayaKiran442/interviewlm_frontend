@@ -9,7 +9,7 @@ export default function IconWrapper({
   className?: HTMLProps<HTMLElement>["className"];
 }) {
   return (
-    <div className={cn("flex items-center gap-1 justify-center", className)}>
+    <div className={cn("flex items-center gap-1", className)}>
       {children}
     </div>
   );

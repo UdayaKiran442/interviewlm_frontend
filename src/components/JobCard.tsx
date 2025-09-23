@@ -69,7 +69,7 @@ export default function JobCard({
       <div className="mt-5">
         <ButtonSecondary
           onClick={() => redirect(`/hr/job/${job.jobId}`, RedirectType.push)}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 cursor-pointer"
         >
           <Users size={20} />
           View Applicants ({length})

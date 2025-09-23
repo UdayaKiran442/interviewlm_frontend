@@ -3,10 +3,11 @@
 import { IGetApplicationsForJobAPIResponse } from "@/types/types";
 import PageWrapper from "./ui/PageWrapper";
 import Button from "./ui/Buttons";
-import { ArrowLeft, Building2, LocationEdit, Wallet } from "lucide-react";
-import { H3, Tagline } from "./ui/Typography";
+import { ArrowLeft, Building2, LocationEdit, User, Wallet } from "lucide-react";
+import { H3, H4, Tagline } from "./ui/Typography";
 import IconWrapper from "./ui/IconWrapper";
 import { redirect } from "next/navigation";
+import CandidateCard from "./CandidateCard";
 
 export default function Applicants({
   applicants,
@@ -14,7 +15,7 @@ export default function Applicants({
   applicants: IGetApplicationsForJobAPIResponse["applications"];
 }) {
   return (
-    <PageWrapper className="!bg-[#F9FCFE]">
+    <PageWrapper className="!bg-[#e8f0f5]">
       <div className="p-8">
         {/* header title */}
         <div className="flex gap-3 items-center">
@@ -48,8 +49,20 @@ export default function Applicants({
           </div>
         </div>
         {/* candidates */}
-        <div>
-
+        <div className="mt-15 bg-white rounded-2xl p-8">
+          {/* title */}
+          <div>
+            <div className="flex items-center gap-3">
+              <User size={30} />
+              <H4>Candidates ({applicants.length})</H4>
+            </div>
+          </div>
+          {/* candidates list */}
+          {applicants.map((applicant) => (
+            <div key={applicant.applicationId} className="mt-5">
+              <CandidateCard applicant={applicant} />
+            </div>
+          ))}
         </div>
       </div>
     </PageWrapper>
