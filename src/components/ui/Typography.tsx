@@ -31,5 +31,5 @@ export function H5({ children, className }: TypegraphyProps) {
 }
 
 export function Tagline({ children, className }: TypegraphyProps) {
-  return <p className={cn("text-gray-600 mt-1", className)}>{children}</p>;
+  return <p className={cn("text-gray-600", className)}>{children}</p>;
 }
