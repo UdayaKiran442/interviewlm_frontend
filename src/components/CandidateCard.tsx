@@ -1,13 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
+import { Briefcase, Calendar, Eye, FolderDot, Mail, MapPin, Phone } from "lucide-react";
 
 import { IGetApplicationsForJobAPIResponse } from "@/types/types";
 import ProfileIcon from "./ui/ProfileIcon";
 import { H5 } from "./ui/Typography";
 import { ButtonSecondary } from "./ui/Buttons";
-import { Briefcase, Eye, Mail, MapPin, Phone } from "lucide-react";
-import TitleCapsule from "./ui/TitleCapsule";
 import ContactInfoItem from "./IconInfoItem";
 
 export default function CandidateCard({
@@ -36,17 +35,21 @@ export default function CandidateCard({
               {applicant.middleName && applicant.middleName}{" "}
               {applicant.lastName}
             </H5>
-            <div className="grid grid-cols-1 md:grid-cols-2 mt-1.5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 mt-1.5 gap-3">
+              {/* appicant email */}
               <ContactInfoItem icon={Mail} size={20} text={applicant.email} />
+              {/* applicant phone */}
               <ContactInfoItem icon={Phone} size={20} text={applicant.phone} />
+              {/* applicant location */}
               <ContactInfoItem icon={MapPin} size={20} text={applicant.location} />
+              {/* applicant experience */}
               <ContactInfoItem icon={Briefcase} size={20} text={`${applicant.totalExperience} years`} />
-              <div>
-                {/* display current round name */}
-                {currentRoundDetails && (
-                  <TitleCapsule title={currentRoundDetails?.roundName} />
-                )}
-              </div>
+              {/* display current round name */}
+              {currentRoundDetails && (
+                <ContactInfoItem icon={FolderDot} size={20} text={currentRoundDetails.roundName} />
+              )}
+              {/* applied at */}
+              <ContactInfoItem icon={Calendar} size={20} text={applicant.appliedAt.split("T")[0]} />
             </div>
           </div>
         </div>
