@@ -1,13 +1,14 @@
 "use client";
 
+import { redirect } from "next/navigation";
+import { ArrowLeft, Building2, MapPin, User, Wallet } from "lucide-react";
+
 import { IGetApplicationsForJobAPIResponse } from "@/types/types";
 import PageWrapper from "./ui/PageWrapper";
 import Button from "./ui/Buttons";
-import { ArrowLeft, Building2, LocationEdit, User, Wallet } from "lucide-react";
-import { H3, H4, Tagline } from "./ui/Typography";
-import IconWrapper from "./ui/IconWrapper";
-import { redirect } from "next/navigation";
+import { H3, H4 } from "./ui/Typography";
 import CandidateCard from "./CandidateCard";
+import ContactInfoItem from "./IconInfoItem";
 
 export default function Applicants({
   applicants,
@@ -33,18 +34,12 @@ export default function Applicants({
           <div>
             <H3>Senior Software Engineer</H3>
             <div className="flex gap-5">
-              <IconWrapper>
-                <Building2 size={20} />
-                <Tagline>Engineering</Tagline>
-              </IconWrapper>
-              <IconWrapper>
-                <LocationEdit size={20} />
-                <Tagline>India</Tagline>
-              </IconWrapper>
-              <IconWrapper>
-                <Wallet size={20} />
-                <Tagline>10-15LPA</Tagline>
-              </IconWrapper>
+              {/* department */}
+              <ContactInfoItem icon={Building2} text="Engineering" size={20} />
+              {/* location */}
+              <ContactInfoItem icon={MapPin} text="India" size={20} />
+              {/* package */}
+              <ContactInfoItem icon={Wallet} text="10-15LPA" size={20} />
             </div>
           </div>
         </div>

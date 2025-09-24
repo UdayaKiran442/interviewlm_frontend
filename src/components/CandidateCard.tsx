@@ -73,6 +73,7 @@ export default function CandidateCard({
           </div>
           <div>
             <H5>
+              {/* applicant first name */}
               {applicant.firstName}{" "}
               {applicant.middleName && applicant.middleName}{" "}
               {applicant.lastName}
@@ -137,11 +138,13 @@ export default function CandidateCard({
               }
               className="!px-2.5 !py-0.5 !text-xs font-semibold"
             />
+            {/* ai score */}
             <div className="flex items-center gap-0.5">
               <LoaderPinwheel size={16} color="gray" />
               <Tagline>{selectedRound?.feedback?.aiScore}% confidence</Tagline>
             </div>
           </div>
+          {/* strengths and concerns of the selected round, by default it will show the feedback of the current round */}
           <div>
             {selectedRound &&
               Array.isArray(selectedRound.feedback?.strengths) &&
@@ -167,12 +170,16 @@ export default function CandidateCard({
                   </p>
                 </div>
               )}
+            {/* if candidate is yet to be screened or yet to give interview then show no feedback available */}
+            {!selectedRound?.feedback && (
+              <p className="text-gray-600">No AI feedback available.</p>
+            )}
           </div>
         </div>
         {/* applications round status */}
-        <div></div>
+        <div>{/* display application status here */}</div>
       </div>
-      {/* round details */}
+      {/* round details on click of each round card, selectedRound state will be updated */}
       <div className="flex justify-center flex-wrap gap-10 mt-8 items-start">
         {applicant.roundResults.map((round) => (
           <div
@@ -190,7 +197,11 @@ export default function CandidateCard({
             ) : (
               <ProfileIcon
                 name={round.roundNumber.toString()}
-                className="w-8 h-8"
+                className={`w-8 h-8 ${
+                  applicant.currentRound === round.roundId
+                    ? ""
+                    : "!bg-gray-200 !text-gray-700"
+                }`}
               />
             )}
             {/* round name */}
