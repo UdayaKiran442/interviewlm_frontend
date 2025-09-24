@@ -173,24 +173,31 @@ export default function CandidateCard({
         <div></div>
       </div>
       {/* round details */}
-      <div className="flex justify-around gap-8 mt-8 items-center">
+      <div className="flex justify-center flex-wrap gap-10 mt-8 items-start">
         {applicant.roundResults.map((round) => (
-          <div key={round.roundId}>
-            <div className="flex flex-col items-center cursor-pointer">
-              {/* icon */}
-              {round.verdictBy ? (
-                round.isQualified ? (
-                  <CircleCheckBig color="green" />
-                ) : (
-                  <CircleX color="red" />
-                )
+          <div
+            key={round.roundId}
+            className="flex flex-col items-center cursor-pointer text-center space-y-2 
+                 transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-md hover:bg-gray-50 p-3 rounded-xl"
+          >
+            {/* icon */}
+            {round.verdictBy ? (
+              round.isQualified ? (
+                <CircleCheckBig className="w-8 h-8 text-green-500" />
               ) : (
-                <ProfileIcon name={round.roundNumber.toString()} />
-              )}
-              {/* round name */}
-              <p>{round.roundName}</p>
-              {round.feedback?.aiScore && <p>{round.feedback.aiScore}%</p>}
-            </div>
+                <CircleX className="w-8 h-8 text-red-500" />
+              )
+            ) : (
+              <ProfileIcon
+                name={round.roundNumber.toString()}
+                className="w-8 h-8"
+              />
+            )}
+            {/* round name */}
+            <p className="text-sm font-medium">{round.roundName}</p>
+            {round.feedback?.aiScore && (
+              <p className="text-xs text-gray-600">{round.feedback.aiScore}%</p>
+            )}
           </div>
         ))}
       </div>
