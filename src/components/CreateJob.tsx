@@ -8,7 +8,7 @@ import { Input } from "./ui/Input";
 import { Label } from "./ui/Label";
 import { Card } from "./ui/Card";
 import { ButtonSecondary } from "./ui/Buttons";
-import { Rounds } from "./ui/Rounds";
+import { Rounds } from "./Rounds";
 import {
   ICreateJobPayload,
   IJobState,

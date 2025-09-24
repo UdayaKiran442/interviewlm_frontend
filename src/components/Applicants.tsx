@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { ArrowLeft, Building2, MapPin, User, Wallet } from "lucide-react";
 
 import { IGetApplicationsForJobAPIResponse } from "@/types/types";
-import PageWrapper from "./ui/PageWrapper";
+import PageWrapper from "./PageWrapper";
 import Button from "./ui/Buttons";
 import { H3, H4 } from "./ui/Typography";
 import CandidateCard from "./CandidateCard";

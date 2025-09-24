@@ -1,3 +1,16 @@
+/**
+ * @author Udaya Kiran Gonuguntla
+ * @description Input component with customizable styles and behavior
+ * @param {string} className - Additional class names for styling
+ * @param {string} placeholder - Placeholder text for the input
+ * @param {string} name - Name attribute for the input
+ * @param {string} id - ID attribute for the input
+ * @param {string} type - Type attribute for the input (e.g., text, number)
+ * @param {string | number} value - Value of the input
+ * @param {(e: React.ChangeEvent<HTMLInputElement>) = void} onChange - Change handler for the input
+ * @returns {JSX.Element} The Input component
+ */
+
 import { cn } from "@/lib/utils";
 
 interface InputProps {

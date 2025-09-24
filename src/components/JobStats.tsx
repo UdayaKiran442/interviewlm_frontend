@@ -1,5 +1,5 @@
 import { IJob } from "@/types/types";
-import StatsWrapper from "./ui/StatsWrapper";
+import StatsWrapper from "./StatsWrapper";
 import StatsNumber from "./ui/StatsNumber";
 import { Tagline } from "./ui/Typography";
 

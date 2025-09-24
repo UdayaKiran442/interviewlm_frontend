@@ -19,12 +19,12 @@ import {
   IGetApplicationsForJobAPIResponse,
   IRoundResults,
 } from "@/types/types";
-import ProfileIcon from "./ui/ProfileIcon";
+import ProfileIcon from "./ProfileIcon";
 import { H5, Tagline } from "./ui/Typography";
 import { ButtonSecondary } from "./ui/Buttons";
 import ContactInfoItem from "./IconInfoItem";
-import IconWrapper from "./ui/IconWrapper";
-import TitleCapsule from "./ui/TitleCapsule";
+import IconWrapper from "./IconWrapper";
+import TitleCapsule from "./TitleCapsule";
 
 export default function CandidateCard({
   applicant,

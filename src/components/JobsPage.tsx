@@ -2,7 +2,7 @@
 import { Briefcase, Plus } from "lucide-react";
 
 import { IJob } from "@/types/types";
-import PageWrapper from "./ui/PageWrapper";
+import PageWrapper from "./PageWrapper";
 import { H3, H4, Tagline } from "./ui/Typography";
 import { ButtonSecondary } from "./ui/Buttons";
 import JobCard from "./JobCard";

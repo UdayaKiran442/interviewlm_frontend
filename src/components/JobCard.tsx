@@ -2,11 +2,11 @@ import { redirect, RedirectType } from "next/navigation";
 
 import { IJob } from "@/types/types";
 import React from "react";
-import ProfileIcon from "./ui/ProfileIcon";
+import ProfileIcon from "./ProfileIcon";
 import { H5, Tagline } from "./ui/Typography";
-import IconWrapper from "./ui/IconWrapper";
+import IconWrapper from "./IconWrapper";
 import { Building2, LocationEdit, Users, Wallet } from "lucide-react";
-import TitleCapsule from "./ui/TitleCapsule";
+import TitleCapsule from "./TitleCapsule";
 import JobStats from "./JobStats";
 import { ButtonSecondary } from "./ui/Buttons";
 

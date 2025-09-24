@@ -1,3 +1,13 @@
+/**
+ * @author Udaya Kiran Gonuguntla
+ * @description Button component with primary and secondary styles
+ * @param {React.ReactNode} children - The content of the button
+ * @param {string} className - Additional class names for styling
+ * @param {() => void} onClick - Click handler for the button
+ * @param {boolean} disabled - Disable state for secondary button
+ * @returns {JSX.Element} The Button component
+ */
+
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { cn } from "@/lib/utils";
 
