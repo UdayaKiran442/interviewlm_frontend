@@ -1,22 +1,64 @@
 "use client";
 
-import { useMemo } from "react";
-import { Briefcase, Calendar, Eye, FolderDot, Mail, MapPin, Phone } from "lucide-react";
+import { useMemo, useState } from "react";
+import {
+  Brain,
+  Briefcase,
+  Calendar,
+  CircleCheckBig,
+  CircleX,
+  Eye,
+  FolderDot,
+  LoaderPinwheel,
+  Mail,
+  MapPin,
+  Phone,
+} from "lucide-react";
 
-import { IGetApplicationsForJobAPIResponse } from "@/types/types";
+import {
+  IGetApplicationsForJobAPIResponse,
+  IRoundResults,
+} from "@/types/types";
 import ProfileIcon from "./ui/ProfileIcon";
-import { H5 } from "./ui/Typography";
+import { H5, Tagline } from "./ui/Typography";
 import { ButtonSecondary } from "./ui/Buttons";
 import ContactInfoItem from "./IconInfoItem";
+import IconWrapper from "./ui/IconWrapper";
+import TitleCapsule from "./ui/TitleCapsule";
 
 export default function CandidateCard({
   applicant,
 }: {
   applicant: IGetApplicationsForJobAPIResponse["applications"][0];
 }) {
-  const currentRoundDetails = useMemo(() =>
-    applicant.roundResults?.find((round) => round.roundId === applicant.currentRound),
+  const currentRoundDetails = useMemo(
+    () =>
+      applicant.roundResults?.find(
+        (round) => round.roundId === applicant.currentRound
+      ),
     [applicant.roundResults, applicant.currentRound]
+  );
+  const [selectedRound, setSelectedRound] = useState<IRoundResults | undefined>(
+    {
+      applicationId: currentRoundDetails?.applicationId || "",
+      roundId: currentRoundDetails?.roundId || "",
+      roundResultId: currentRoundDetails?.roundResultId || "",
+      feedback: currentRoundDetails?.feedback || {
+        feedback: "",
+        keywordMatch: 0,
+        experienceMatch: 0,
+        skillMatch: 0,
+        aiScore: 0,
+        strengths: [],
+        concerns: [],
+        aiRecommendation: "",
+      },
+      isQualified: currentRoundDetails?.isQualified || null,
+      roundName: currentRoundDetails?.roundName || "",
+      roundType: currentRoundDetails?.roundType || "",
+      verdictBy: currentRoundDetails?.verdictBy || null,
+      roundNumber: currentRoundDetails?.roundNumber || 0,
+    }
   );
 
   return (
@@ -41,15 +83,31 @@ export default function CandidateCard({
               {/* applicant phone */}
               <ContactInfoItem icon={Phone} size={20} text={applicant.phone} />
               {/* applicant location */}
-              <ContactInfoItem icon={MapPin} size={20} text={applicant.location} />
+              <ContactInfoItem
+                icon={MapPin}
+                size={20}
+                text={applicant.location}
+              />
               {/* applicant experience */}
-              <ContactInfoItem icon={Briefcase} size={20} text={`${applicant.totalExperience} years`} />
+              <ContactInfoItem
+                icon={Briefcase}
+                size={20}
+                text={`${applicant.totalExperience} years`}
+              />
               {/* display current round name */}
               {currentRoundDetails && (
-                <ContactInfoItem icon={FolderDot} size={20} text={currentRoundDetails.roundName} />
+                <ContactInfoItem
+                  icon={FolderDot}
+                  size={20}
+                  text={currentRoundDetails.roundName}
+                />
               )}
               {/* applied at */}
-              <ContactInfoItem icon={Calendar} size={20} text={applicant.appliedAt.split("T")[0]} />
+              <ContactInfoItem
+                icon={Calendar}
+                size={20}
+                text={applicant.appliedAt.split("T")[0]}
+              />
             </div>
           </div>
         </div>
@@ -62,9 +120,80 @@ export default function CandidateCard({
         </div>
       </div>
       {/* ai feedback and application round status */}
-      <div></div>
+      <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="border border-gray-900 p-4 mt-8 rounded-2xl">
+          <IconWrapper>
+            <Brain size={18} color="blue" />
+            <p className="font-semibold text-sm">AI Recommendation</p>
+          </IconWrapper>
+          <div className="flex justify-between items-center mt-2">
+            <TitleCapsule
+              title={
+                selectedRound?.feedback?.aiRecommendation
+                  ? "PROCEED"
+                  : !selectedRound?.feedback?.aiRecommendation
+                  ? "REJECT"
+                  : "NEEDS HUMAN REVIEW"
+              }
+              className="!px-2.5 !py-0.5 !text-xs font-semibold"
+            />
+            <div className="flex items-center gap-0.5">
+              <LoaderPinwheel size={16} color="gray" />
+              <Tagline>{selectedRound?.feedback?.aiScore}% confidence</Tagline>
+            </div>
+          </div>
+          <div>
+            {selectedRound &&
+              Array.isArray(selectedRound.feedback?.strengths) &&
+              selectedRound.feedback.strengths.length > 0 && (
+                <div>
+                  <p className="font-semibold text-green-500">Strengths:</p>
+                  <ul className="list-disc list-inside">
+                    {selectedRound.feedback.strengths.map((strength, index) => (
+                      <li key={index}>{strength}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            {selectedRound &&
+              Array.isArray(selectedRound.feedback?.concerns) &&
+              selectedRound.feedback.concerns.length > 0 && (
+                <div className="mt-2">
+                  <p>
+                    <span className="text-red-500 font-semibold mr-2.5">
+                      Concerns:
+                    </span>
+                    {selectedRound.feedback.concerns[0]}
+                  </p>
+                </div>
+              )}
+          </div>
+        </div>
+        {/* applications round status */}
+        <div></div>
+      </div>
       {/* round details */}
-      <div></div>
+      <div className="flex justify-around gap-8 mt-8 items-center">
+        {applicant.roundResults.map((round) => (
+          <div key={round.roundId}>
+            <div className="flex flex-col items-center cursor-pointer">
+              {/* icon */}
+              {round.verdictBy ? (
+                round.isQualified ? (
+                  <CircleCheckBig color="green" />
+                ) : (
+                  <CircleX color="red" />
+                )
+              ) : (
+                <ProfileIcon name={round.roundNumber.toString()} />
+              )}
+              {/* round name */}
+              <p>{round.roundName}</p>
+              {round.feedback?.aiScore && <p>{round.feedback.aiScore}%</p>}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -129,7 +129,7 @@ export type IGetApplicationsForJobAPIResponse = {
         jobId: string,
         status: string,
         appliedAt: string,
-        roundResults: IRoundResults,
+        roundResults: IRoundResults[],
     }[]
 }
 
@@ -152,4 +152,4 @@ export type IRoundResults = {
     roundType: string,
     roundName: string,
     roundNumber: number
-}[]
+}
