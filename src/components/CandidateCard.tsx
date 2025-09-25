@@ -2,14 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  Brain,
   Briefcase,
   Calendar,
   CircleCheckBig,
   CircleX,
   Eye,
   FolderDot,
-  LoaderPinwheel,
   Mail,
   MapPin,
   Phone,
@@ -20,11 +18,11 @@ import {
   IRoundResults,
 } from "@/types/types";
 import ProfileIcon from "./ProfileIcon";
-import { H5, Tagline } from "./ui/Typography";
+import { H5 } from "./ui/Typography";
 import { ButtonSecondary } from "./ui/Buttons";
-import ContactInfoItem from "./IconInfoItem";
-import IconWrapper from "./IconWrapper";
-import TitleCapsule from "./TitleCapsule";
+import IconInfoItem from "./IconInfoItem";
+import ApplicationProgress from "./ApplicationProgress";
+import RoundFeedback from "./RoundFeedback";
 
 export default function CandidateCard({
   applicant,
@@ -108,19 +106,31 @@ export default function CandidateCard({
             </H5>
             <div className="grid grid-cols-1 md:grid-cols-2 mt-1.5 gap-3">
               {/* appicant email */}
-              <ContactInfoItem icon={Mail} size={20} text={applicant.email} />
+              <IconInfoItem
+                className="text-sm"
+                icon={Mail}
+                size={16}
+                text={applicant.email}
+              />
               {/* applicant phone */}
-              <ContactInfoItem icon={Phone} size={20} text={applicant.phone} />
+              <IconInfoItem
+                className="text-sm"
+                icon={Phone}
+                size={16}
+                text={applicant.phone}
+              />
               {/* applicant location */}
-              <ContactInfoItem
+              <IconInfoItem
+                className="text-sm"
                 icon={MapPin}
-                size={20}
+                size={16}
                 text={applicant.location}
               />
               {/* applicant experience */}
-              <ContactInfoItem
+              <IconInfoItem
                 icon={Briefcase}
-                size={20}
+                size={16}
+                className="text-sm"
                 text={`${
                   Number(applicant.totalExperience) <= 1
                     ? applicant.totalExperience + " year experience"
@@ -129,17 +139,19 @@ export default function CandidateCard({
               />
               {/* display current round name */}
               {currentRoundDetails && (
-                <ContactInfoItem
+                <IconInfoItem
                   icon={FolderDot}
-                  size={20}
+                  size={16}
                   text={currentRoundDetails.roundName}
+                  className="text-sm"
                 />
               )}
               {/* applied at */}
-              <ContactInfoItem
+              <IconInfoItem
                 icon={Calendar}
-                size={20}
+                size={16}
                 text={applicant.appliedAt.split("T")[0]}
+                className="text-sm"
               />
             </div>
           </div>
@@ -154,83 +166,13 @@ export default function CandidateCard({
       </div>
       {/* ai feedback and application round status */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <div className="border border-gray-900 p-4 mt-8 rounded-2xl">
-          <IconWrapper>
-            <Brain size={18} color="blue" />
-            <p className="font-semibold text-sm">AI Recommendation</p>
-          </IconWrapper>
-          <div className="flex justify-between items-center mt-2">
-            {selectedRound?.roundResultId == null ? (
-              <p>Candidate yet to take the round</p>
-            ) : (
-              <>
-                <TitleCapsule
-                  title={
-                    selectedRound?.feedback?.aiRecommendation
-                      ? "PROCEED"
-                      : !selectedRound?.feedback?.aiRecommendation &&
-                        selectedRound?.roundResultId
-                      ? "REJECT"
-                      : "NEEDS HUMAN REVIEW"
-                  }
-                  className="!px-2.5 !py-0.5 !text-xs font-semibold"
-                />
-                {/* ai score */}
-                <div className="flex items-center gap-0.5">
-                  <LoaderPinwheel size={16} color="gray" />
-                  <Tagline>
-                    {selectedRound?.feedback?.aiScore}% confidence
-                  </Tagline>
-                </div>
-              </>
-            )}
-          </div>
-          {/* strengths and concerns of the selected round, by default it will show the feedback of the current round */}
-          <div>
-            {selectedRound &&
-              Array.isArray(selectedRound.feedback?.strengths) &&
-              selectedRound.feedback.strengths.length > 0 && (
-                <div>
-                  <p>
-                    <span className="text-green-500 font-semibold mr-2.5">
-                      Strengths:
-                    </span>
-                    {selectedRound.feedback.strengths[0]}
-                  </p>
-                </div>
-              )}
-            {selectedRound &&
-              Array.isArray(selectedRound.feedback?.concerns) &&
-              selectedRound.feedback.concerns.length > 0 && (
-                <div className="mt-2">
-                  <p>
-                    <span className="text-red-500 font-semibold mr-2.5">
-                      Concerns:
-                    </span>
-                    {selectedRound.feedback.concerns[0]}
-                  </p>
-                </div>
-              )}
-          </div>
-        </div>
+        <RoundFeedback selectedRound={selectedRound} />
         {/* applications round status */}
-        <div className="border border-gray-900 p-4 mt-8 rounded-2xl">
-          {/* display application status here */}
-          <p className="font-semibold text-sm">Progress Overview</p>
-          <div className="flex justify-between items-center mt-2">
-            <p className="text-gray-600">Interview Progress</p>
-            <p>{progress}%</p>
-          </div>
-          <div className="w-full bg-blue-200 rounded-full h-2.5 mt-2.5">
-            <div
-              className="bg-blue-600 h-2.5 rounded-full"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-          <Tagline className="!text-[0.75rem]">
-            {completedRounds}/{applicant.roundResults.length} rounds completed
-          </Tagline>
-        </div>
+        <ApplicationProgress
+          completedRounds={completedRounds}
+          totalRounds={applicant.roundResults.length}
+          progress={progress}
+        />
       </div>
       {/* round details on click of each round card, selectedRound state will be updated */}
       <div className="flex justify-center flex-wrap gap-10 mt-8 items-start">
@@ -244,14 +186,17 @@ export default function CandidateCard({
             }`}
             onClick={() => handleRoundClick(round.roundId)}
           >
-            {/* icon */}
+            {/* icon based on round status */}
             {round.verdictBy ? (
               round.isQualified ? (
+                // green check icon if qualified
                 <CircleCheckBig className="w-8 h-8 text-green-500" />
               ) : (
+                // red cross icon if not qualified
                 <CircleX className="w-8 h-8 text-red-500" />
               )
             ) : (
+              // default icon with round number if round not yet completed or verdict is pending, gray icon for future rounds, blue for current round
               <ProfileIcon
                 name={round.roundNumber.toString()}
                 className={`w-8 h-8 ${

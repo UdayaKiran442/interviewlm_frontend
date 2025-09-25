@@ -17,7 +17,7 @@ interface ContactInfoItemProps {
   size: number;
 }
 
-export default function ContactInfoItem({
+export default function IconInfoItem({
   icon,
   text,
   className,

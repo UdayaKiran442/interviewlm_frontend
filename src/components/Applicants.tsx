@@ -8,7 +8,7 @@ import PageWrapper from "./PageWrapper";
 import Button from "./ui/Buttons";
 import { H3, H4 } from "./ui/Typography";
 import CandidateCard from "./CandidateCard";
-import ContactInfoItem from "./IconInfoItem";
+import IconInfoItem from "./IconInfoItem";
 
 export default function Applicants({
   applicants,
@@ -35,11 +35,11 @@ export default function Applicants({
             <H3>Senior Software Engineer</H3>
             <div className="flex gap-5">
               {/* department */}
-              <ContactInfoItem icon={Building2} text="Engineering" size={20} />
+              <IconInfoItem icon={Building2} text="Engineering" size={20} />
               {/* location */}
-              <ContactInfoItem icon={MapPin} text="India" size={20} />
+              <IconInfoItem icon={MapPin} text="India" size={20} />
               {/* package */}
-              <ContactInfoItem icon={Wallet} text="10-15LPA" size={20} />
+              <IconInfoItem icon={Wallet} text="10-15LPA" size={20} />
             </div>
           </div>
         </div>
