@@ -47,8 +47,8 @@ export default function Applicants({
         <div className="mt-15 bg-white rounded-2xl p-8">
           {/* title */}
           <div>
-            <div className="flex items-center gap-3">
-              <User size={30} />
+            <div className="flex items-center gap-2">
+              <User size={25} />
               <H4>Candidates ({applicants.length})</H4>
             </div>
           </div>

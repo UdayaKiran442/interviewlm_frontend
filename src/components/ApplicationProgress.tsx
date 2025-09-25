@@ -12,7 +12,7 @@ export default function ApplicationProgress({
   totalRounds,
 }: ApplicationProgressProps) {
   return (
-    <div className="border border-gray-900 p-4 mt-8 rounded-2xl">
+    <div className="border border-gray-900 p-6 mt-8 rounded-2xl">
       {/* display application status here */}
       <p className="font-semibold text-sm">Progress Overview</p>
       <div className="flex justify-between items-center mt-2">

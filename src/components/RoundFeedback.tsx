@@ -10,7 +10,7 @@ export default function RoundFeedback({
   selectedRound: IRoundResults | undefined;
 }) {
   return (
-    <div className="border border-gray-900 p-4 mt-8 rounded-2xl">
+    <div className="border border-gray-900 p-6 mt-8 rounded-2xl">
       <IconWrapper>
         <Brain size={18} color="blue" />
         <p className="font-semibold text-sm">AI Recommendation</p>
