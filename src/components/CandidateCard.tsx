@@ -160,21 +160,30 @@ export default function CandidateCard({
             <p className="font-semibold text-sm">AI Recommendation</p>
           </IconWrapper>
           <div className="flex justify-between items-center mt-2">
-            <TitleCapsule
-              title={
-                selectedRound?.feedback?.aiRecommendation
-                  ? "PROCEED"
-                  : !selectedRound?.feedback?.aiRecommendation
-                  ? "REJECT"
-                  : "NEEDS HUMAN REVIEW"
-              }
-              className="!px-2.5 !py-0.5 !text-xs font-semibold"
-            />
-            {/* ai score */}
-            <div className="flex items-center gap-0.5">
-              <LoaderPinwheel size={16} color="gray" />
-              <Tagline>{selectedRound?.feedback?.aiScore}% confidence</Tagline>
-            </div>
+            {selectedRound?.roundResultId == null ? (
+              <p>Candidate yet to take the round</p>
+            ) : (
+              <>
+                <TitleCapsule
+                  title={
+                    selectedRound?.feedback?.aiRecommendation
+                      ? "PROCEED"
+                      : !selectedRound?.feedback?.aiRecommendation &&
+                        selectedRound?.roundResultId
+                      ? "REJECT"
+                      : "NEEDS HUMAN REVIEW"
+                  }
+                  className="!px-2.5 !py-0.5 !text-xs font-semibold"
+                />
+                {/* ai score */}
+                <div className="flex items-center gap-0.5">
+                  <LoaderPinwheel size={16} color="gray" />
+                  <Tagline>
+                    {selectedRound?.feedback?.aiScore}% confidence
+                  </Tagline>
+                </div>
+              </>
+            )}
           </div>
           {/* strengths and concerns of the selected round, by default it will show the feedback of the current round */}
           <div>
@@ -202,10 +211,6 @@ export default function CandidateCard({
                   </p>
                 </div>
               )}
-            {/* if candidate is yet to be screened or yet to give interview then show no feedback available */}
-            {!selectedRound?.feedback && (
-              <p className="text-gray-600">No AI feedback available.</p>
-            )}
           </div>
         </div>
         {/* applications round status */}
@@ -223,8 +228,7 @@ export default function CandidateCard({
             ></div>
           </div>
           <Tagline className="!text-[0.75rem]">
-            {completedRounds}/{applicant.roundResults.length} rounds
-            completed
+            {completedRounds}/{applicant.roundResults.length} rounds completed
           </Tagline>
         </div>
       </div>
@@ -233,7 +237,11 @@ export default function CandidateCard({
         {applicant.roundResults.map((round) => (
           <div
             key={round.roundId}
-            className={`flex flex-col items-center cursor-pointer text-center space-y-2 hover:bg-gray-50 p-3 rounded-xl ${activeRoundId === round.roundId ? "border-2 border-blue-600 bg-blue-50" : ""}`}
+            className={`flex flex-col items-center cursor-pointer text-center space-y-2 hover:bg-gray-50 p-3 rounded-xl ${
+              activeRoundId === round.roundId
+                ? "border-2 border-blue-600 bg-blue-50"
+                : ""
+            }`}
             onClick={() => handleRoundClick(round.roundId)}
           >
             {/* icon */}
