@@ -62,11 +62,15 @@ export default function CandidateCard({
   );
   const [progress, setProgress] = useState<number>(0);
   const [completedRounds, setCompletedRounds] = useState<number>(0);
+  const [activeRoundId, setActiveRoundId] = useState<string>(
+    applicant.currentRound || ""
+  );
 
   function handleRoundClick(roundId: string) {
     const round = applicant.roundResults.find((r) => r.roundId === roundId);
     if (round) {
       setSelectedRound(round);
+      setActiveRoundId(roundId);
     }
   }
 
@@ -229,8 +233,7 @@ export default function CandidateCard({
         {applicant.roundResults.map((round) => (
           <div
             key={round.roundId}
-            className="flex flex-col items-center cursor-pointer text-center space-y-2 
-                 transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-md hover:bg-gray-50 p-3 rounded-xl"
+            className={`flex flex-col items-center cursor-pointer text-center space-y-2 hover:bg-gray-50 p-3 rounded-xl ${activeRoundId === round.roundId ? "border-2 border-blue-600 bg-blue-50" : ""}`}
             onClick={() => handleRoundClick(round.roundId)}
           >
             {/* icon */}
