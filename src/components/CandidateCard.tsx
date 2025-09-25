@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Brain,
   Briefcase,
@@ -60,9 +60,33 @@ export default function CandidateCard({
       roundNumber: currentRoundDetails?.roundNumber || 0,
     }
   );
+  const [progress, setProgress] = useState<number>(0);
+  const [completedRounds, setCompletedRounds] = useState<number>(0);
+
+  function handleRoundClick(roundId: string) {
+    const round = applicant.roundResults.find((r) => r.roundId === roundId);
+    if (round) {
+      setSelectedRound(round);
+    }
+  }
+
+  const calculateProgress = useCallback(() => {
+    const totalRounds = applicant.roundResults.length;
+    const completedRounds = applicant.roundResults.filter(
+      (round) => round.verdictBy !== null
+    ).length;
+    const percentage =
+      totalRounds === 0 ? 0 : Math.round((completedRounds / totalRounds) * 100);
+    setProgress(percentage);
+    setCompletedRounds(completedRounds);
+  }, [applicant.roundResults]);
+
+  useEffect(() => {
+    calculateProgress();
+  }, [calculateProgress]);
 
   return (
-    <div className="border border-gray-200 rounded-2xl p-8">
+    <div className="border border-gray-200 rounded-2xl p-8 ">
       {/* candidate details */}
       <div className="flex justify-between">
         {/* left side */}
@@ -93,7 +117,11 @@ export default function CandidateCard({
               <ContactInfoItem
                 icon={Briefcase}
                 size={20}
-                text={`${applicant.totalExperience} years`}
+                text={`${
+                  Number(applicant.totalExperience) <= 1
+                    ? applicant.totalExperience + " year experience"
+                    : applicant.totalExperience + " years experience"
+                }`}
               />
               {/* display current round name */}
               {currentRoundDetails && (
@@ -121,7 +149,7 @@ export default function CandidateCard({
         </div>
       </div>
       {/* ai feedback and application round status */}
-      <div className="grid grid-cols-1 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <div className="border border-gray-900 p-4 mt-8 rounded-2xl">
           <IconWrapper>
             <Brain size={18} color="blue" />
@@ -150,12 +178,12 @@ export default function CandidateCard({
               Array.isArray(selectedRound.feedback?.strengths) &&
               selectedRound.feedback.strengths.length > 0 && (
                 <div>
-                  <p className="font-semibold text-green-500">Strengths:</p>
-                  <ul className="list-disc list-inside">
-                    {selectedRound.feedback.strengths.map((strength, index) => (
-                      <li key={index}>{strength}</li>
-                    ))}
-                  </ul>
+                  <p>
+                    <span className="text-green-500 font-semibold mr-2.5">
+                      Strengths:
+                    </span>
+                    {selectedRound.feedback.strengths[0]}
+                  </p>
                 </div>
               )}
             {selectedRound &&
@@ -177,7 +205,24 @@ export default function CandidateCard({
           </div>
         </div>
         {/* applications round status */}
-        <div>{/* display application status here */}</div>
+        <div className="border border-gray-900 p-4 mt-8 rounded-2xl">
+          {/* display application status here */}
+          <p className="font-semibold text-sm">Progress Overview</p>
+          <div className="flex justify-between items-center mt-2">
+            <p className="text-gray-600">Interview Progress</p>
+            <p>{progress}%</p>
+          </div>
+          <div className="w-full bg-blue-200 rounded-full h-2.5 mt-2.5">
+            <div
+              className="bg-blue-600 h-2.5 rounded-full"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+          <Tagline className="!text-[0.75rem]">
+            {completedRounds}/{applicant.roundResults.length} rounds
+            completed
+          </Tagline>
+        </div>
       </div>
       {/* round details on click of each round card, selectedRound state will be updated */}
       <div className="flex justify-center flex-wrap gap-10 mt-8 items-start">
@@ -186,6 +231,7 @@ export default function CandidateCard({
             key={round.roundId}
             className="flex flex-col items-center cursor-pointer text-center space-y-2 
                  transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-md hover:bg-gray-50 p-3 rounded-xl"
+            onClick={() => handleRoundClick(round.roundId)}
           >
             {/* icon */}
             {round.verdictBy ? (
