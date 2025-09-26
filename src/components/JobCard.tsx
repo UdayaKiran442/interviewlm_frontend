@@ -12,10 +12,8 @@ import { ButtonSecondary } from "./ui/Buttons";
 
 export default function JobCard({
   job,
-  length,
 }: {
   job: IJob;
-  length: number;
 }) {
   return (
     <div
@@ -72,7 +70,7 @@ export default function JobCard({
           className="flex items-center gap-2 cursor-pointer"
         >
           <Users size={20} />
-          View Applicants ({length})
+          View Applicants ({job.applications})
         </ButtonSecondary>
       </div>
     </div>

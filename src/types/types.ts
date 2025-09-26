@@ -23,7 +23,7 @@ export type IJob = {
     jobDescription: string;
     department: string;
     package: string | null;
-    location: string | null;
+    location: string;
     maximumApplications: number;
     applications: number;
     inProgress: number;
@@ -46,17 +46,17 @@ export type IRoundState = {
     roundType: string;
     roundName: string;
     roundNumber: number;
-    questionType?: string;
-    duration?: number;
-    difficulty?: string;
-    roundDescription?: string;
-    isAI?: boolean;
+    questionType: string | null;
+    duration: number | null;
+    difficulty: string | null;
+    roundDescription: string | null;
+    isAI: boolean;
 }
 
 export type IJobState = {
     jobTitle: string;
     location: string;
-    package: string;
+    package: string | null;
     experience: string;
     jobDescription: string;
     maximumApplications: number | null;
@@ -69,7 +69,7 @@ export type ICreateJobPayload = {
     jobDescription: string;
     department: string;
     package: string | null;
-    location: string | null;
+    location: string;
     maximumApplications: number | null;
     jobReviewers?: string[];
     rounds: IRoundState[];

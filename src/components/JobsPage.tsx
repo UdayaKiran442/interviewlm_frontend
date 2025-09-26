@@ -33,7 +33,7 @@ export default function JobsPage({ jobs }: { jobs: IJob[] }) {
             <H4>Job Postings ({jobs.length})</H4>
           </div>
           {jobs.map((job) => (
-            <JobCard job={job} length={jobs.length} key={job.jobId} />
+            <JobCard job={job} key={job.jobId} />
           ))}
         </div>
       </div>

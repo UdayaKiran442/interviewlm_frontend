@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Plus, Info, CrossIcon } from "lucide-react";
 
 import { H3, H4, H5, Tagline } from "./ui/Typography";
@@ -20,10 +21,11 @@ import { createJobAPI } from "@/actions/job";
 import { searchReviewersAPI } from "@/actions/reviewers";
 
 export default function CreateJob() {
+  const router = useRouter();
   const [jobDetails, setJobDetails] = useState<IJobState>({
     jobTitle: "",
     location: "",
-    package: "",
+    package: null,
     experience: "",
     jobDescription: "",
     maximumApplications: null,
@@ -31,14 +33,27 @@ export default function CreateJob() {
   });
   const [reviewer, setReviewer] = useState<IReviewer[]>();
   const [selectedReviewer, setSelectedReviewer] = useState<IReviewer[]>();
+  const [searchReviewerName, setSearchReviewerName] = useState<string>("");
   const [rounds, setRounds] = useState<IRoundState[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { user } = useSelector((state: any) => state.auth);
 
+  useEffect(() => {
+  if (selectedReviewer && selectedReviewer.length > 0) {
+    console.log('Updated jobDetails:', jobDetails);
+    console.log('Updated selectedReviewer:', selectedReviewer);
+  }
+}, [jobDetails, selectedReviewer]);
+
   async function searchReviewer(e: ChangeEvent<HTMLInputElement>) {
     try {
       const searchName = e.target.value;
+      setSearchReviewerName(searchName);
+      if (searchName.trim() === "") {
+        setReviewer([]);
+        return;
+      }
       const reviewer = await searchReviewersAPI({ searchName });
       setReviewer(reviewer.reviewers);
     } catch (error) {
@@ -74,6 +89,7 @@ export default function CreateJob() {
 
     // Clear the reviewer search results
     setReviewer([]);
+    setSearchReviewerName("");
   }
 
   function addRound() {
@@ -118,15 +134,18 @@ export default function CreateJob() {
     try {
       const screeningRound: IRoundState = {
         roundType: "Resume Screening",
-        isAI: false,
+        isAI: true,
         roundName: "Resume Screening",
         roundNumber: 1,
+        questionType: null,
+        duration: null,
+        difficulty: null,
+        roundDescription: null,
       };
       const payload: ICreateJobPayload = {
         ...(jobDetails as IJobState),
         companyId: user?.companyId,
         department: "Engineering",
-        jobReviewers: [],
         rounds: [...rounds, screeningRound],
       };
       // send payload to backend
@@ -145,6 +164,7 @@ export default function CreateJob() {
           jobReviewers: [],
         });
         setRounds([]);
+        setSelectedReviewer([]);
       }
     } catch (error) {
       // popup error
@@ -209,7 +229,7 @@ export default function CreateJob() {
                   placeholder="e.g. 8-10LPA"
                   name="package"
                   type="text"
-                  value={jobDetails.package}
+                  value={jobDetails.package || ""}
                   onChange={(e) => updateJobDetails("package", e.target.value)}
                 />
               </div>
@@ -262,7 +282,24 @@ export default function CreateJob() {
                   type="text"
                   className="mt-1"
                   onChange={(e) => searchReviewer(e)}
+                  value={searchReviewerName}
                 />
+                {searchReviewerName.length > 0 &&
+                  reviewer &&
+                  reviewer.length === 0 && (
+                    <div className="p-2 border-b hover:bg-gray-100 flex items-center gap-2">
+                      <p>
+                        No reviewers found for {searchReviewerName},{" "}
+                        <span
+                          className="text-blue-500 cursor-pointer hover:underline"
+                          onClick={() => router.push("/hr/manage-reviewers")}
+                        >
+                          Click here
+                        </span>{" "}
+                        to add reviewer
+                      </p>
+                    </div>
+                  )}
                 {reviewer && reviewer.length > 0 && (
                   <div>
                     {reviewer.map((reviewer) => (
