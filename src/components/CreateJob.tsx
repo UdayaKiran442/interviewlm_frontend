@@ -40,10 +40,10 @@ export default function CreateJob() {
   const { user } = useSelector((state: any) => state.auth);
 
   useEffect(() => {
-  if (selectedReviewer && selectedReviewer.length > 0) {
-    console.log('Updated jobDetails:', jobDetails);
-    console.log('Updated selectedReviewer:', selectedReviewer);
-  }
+  // if (selectedReviewer && selectedReviewer.length > 0) {
+  //   console.log('Updated jobDetails:', jobDetails);
+  //   console.log('Updated selectedReviewer:', selectedReviewer);
+  // }
 }, [jobDetails, selectedReviewer]);
 
   async function searchReviewer(e: ChangeEvent<HTMLInputElement>) {
@@ -62,30 +62,11 @@ export default function CreateJob() {
   }
 
   function handleSelectReviewer(selected: IReviewer) {
-    setJobDetails((prevJobDetails) => {
-      // Create a new array with the existing reviewers plus the new one
-      const updatedReviewers = [
-        ...prevJobDetails.jobReviewers,
-        selected.reviewerId,
-      ];
-      const updatedJobDetails = {
-        ...prevJobDetails,
-        jobReviewers: updatedReviewers,
-      };
-
-      // Log the updated state (this will show the correct value)
-
-      return updatedJobDetails;
+    setJobDetails({
+      ...jobDetails,
+      jobReviewers: [...jobDetails.jobReviewers, selected.reviewerId]
     });
-
-    setSelectedReviewer((prevSelectedReviewer) => {
-      // Create a new array with the existing reviewers plus the new one
-      const updatedSelectedReviewer = [
-        ...(prevSelectedReviewer ?? []),
-        selected,
-      ];
-      return updatedSelectedReviewer;
-    });
+    setSelectedReviewer([...(selectedReviewer ?? []), selected]);
 
     // Clear the reviewer search results
     setReviewer([]);
