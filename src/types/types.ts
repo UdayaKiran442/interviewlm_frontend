@@ -153,3 +153,9 @@ export type IRoundResults = {
     roundName: string,
     roundNumber: number
 }
+
+export type IGetJobByIdAPIResponse = {
+    success: boolean;
+    message: string;
+    job: IJob;
+}

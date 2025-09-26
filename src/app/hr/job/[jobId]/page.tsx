@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getApplicationsForJobAPI } from "@/actions/applications";
 import Applicants from "@/components/Applicants";
+import { getJobByIdAPI } from "@/actions/job";
 
 const JobApplicantsPage = async ({
   params,
@@ -9,13 +10,17 @@ const JobApplicantsPage = async ({
 }) => {
   const { jobId } = await params;
   const response = await getApplicationsForJobAPI(jobId);
-  if (!response.success) {
+  const jobByIdAPIResponse = await getJobByIdAPI({ jobId });
+  if (!response.success || !jobByIdAPIResponse.success) {
     redirect("/");
   }
 
   return (
     <div>
-      <Applicants applicants={response.applications} />
+      <Applicants
+        applicants={response.applications}
+        job={jobByIdAPIResponse.job}
+      />
     </div>
   );
 };
