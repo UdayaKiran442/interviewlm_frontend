@@ -12,6 +12,6 @@ export async function loginUserAPI(payload: { userId: string; email: string }) {
         const response = await loginAPI.json();
         return response;
     } catch (error) {
-        throw error;
+        return error;
     }
 }
