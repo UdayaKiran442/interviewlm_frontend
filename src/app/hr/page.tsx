@@ -14,13 +14,11 @@ const HRPage: React.FC = async () => {
         </div>
       );
     }
-    if (response.success && response.jobs) {
-      return (
-        <div>
-          <JobsPage jobs={response.jobs} />
-        </div>
-      );
-    }
+    return (
+      <div>
+        <JobsPage jobs={response.jobs} />
+      </div>
+    );
   }
 };
 

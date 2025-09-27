@@ -3,7 +3,10 @@
 import { redirect } from "next/navigation";
 import { ArrowLeft, Building2, MapPin, User, Wallet } from "lucide-react";
 
-import { IGetApplicationsForJobAPIResponse, IGetJobByIdAPIResponse } from "@/types/types";
+import {
+  IGetApplicationsForJobAPIResponse,
+  IGetJobByIdAPIResponse,
+} from "@/types/types";
 import PageWrapper from "./PageWrapper";
 import Button from "./ui/Buttons";
 import { H3, H4 } from "./ui/Typography";
@@ -12,7 +15,7 @@ import IconInfoItem from "./IconInfoItem";
 
 export default function Applicants({
   applicants,
-  job
+  job,
 }: {
   applicants: IGetApplicationsForJobAPIResponse["applications"];
   job: IGetJobByIdAPIResponse["job"];

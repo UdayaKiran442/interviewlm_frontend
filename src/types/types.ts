@@ -39,7 +39,7 @@ export type IJob = {
 export type IHRJobsAPIResponse = {
     success: boolean;
     message: string;
-    jobs?: IJob[];
+    jobs: IJob[];
     error?: IAPIError
 }
 
@@ -123,7 +123,7 @@ export type ISearchReviewerAPIResponse = {
 export type IGetApplicationsForJobAPIResponse = {
     success: boolean;
     message: string;
-    applications?: {
+    applications: {
         applicationId: string,
         candidateId: string,
         currentRound: string,

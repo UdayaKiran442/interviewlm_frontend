@@ -162,7 +162,7 @@ export default function CandidateCard({
           <ButtonSecondary
             onClick={() =>
               redirect(
-                `/hr/candidates/${applicant.candidateId}`,
+                `/hr/candidates/${applicant.applicationId}`,
                 RedirectType.push
               )
             }
