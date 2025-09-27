@@ -12,6 +12,7 @@ const JobApplicantsPage = async ({
   const response = await getApplicationsForJobAPI(jobId);
   const jobByIdAPIResponse = await getJobByIdAPI({ jobId });
   if (!response.success || !jobByIdAPIResponse.success) {
+    // TODO: Popup error message
     redirect("/");
   }
 

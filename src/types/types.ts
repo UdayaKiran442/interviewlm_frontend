@@ -123,7 +123,7 @@ export type ISearchReviewerAPIResponse = {
 export type IGetApplicationsForJobAPIResponse = {
     success: boolean;
     message: string;
-    applications: {
+    applications?: {
         applicationId: string,
         candidateId: string,
         currentRound: string,
@@ -141,6 +141,7 @@ export type IGetApplicationsForJobAPIResponse = {
         appliedAt: string,
         roundResults: IRoundResults[],
     }[]
+    error?: IAPIError
 }
 
 export type IRoundResults = {
