@@ -23,6 +23,7 @@ import { ButtonSecondary } from "./ui/Buttons";
 import IconInfoItem from "./IconInfoItem";
 import ApplicationProgress from "./ApplicationProgress";
 import RoundFeedback from "./RoundFeedback";
+import { redirect, RedirectType } from "next/navigation";
 
 export default function CandidateCard({
   applicant,
@@ -158,7 +159,15 @@ export default function CandidateCard({
         </div>
         {/* right side button  */}
         <div>
-          <ButtonSecondary className="flex items-center gap-2">
+          <ButtonSecondary
+            onClick={() =>
+              redirect(
+                `/hr/candidates/${applicant.candidateId}`,
+                RedirectType.push
+              )
+            }
+            className="flex items-center gap-2"
+          >
             <Eye size={20} />
             View Profile
           </ButtonSecondary>

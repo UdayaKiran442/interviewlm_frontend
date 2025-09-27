@@ -128,6 +128,8 @@ export type IGetApplicationsForJobAPIResponse = {
         phone: string,
         jobId: string,
         status: string,
+        resumeLink: string,
+        coverLetter: string | null,
         appliedAt: string,
         roundResults: IRoundResults[],
     }[]
