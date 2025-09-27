@@ -39,7 +39,15 @@ export type IJob = {
 export type IHRJobsAPIResponse = {
     success: boolean;
     message: string;
-    jobs: IJob[];
+    jobs?: IJob[];
+    error?: IAPIError
+}
+
+export type IAPIError = {
+    error: {
+        message: string;
+        error?: unknown;
+    };
 }
 
 export type IRoundState = {

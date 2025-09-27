@@ -14,8 +14,8 @@ export async function getJobsByHRAPI(token: string): Promise<IHRJobsAPIResponse>
         });
         const response = await jobsAPI.json()
         return response;
-    } catch (error) {
-        throw error;
+    } catch (error: unknown) {
+        return (error as IHRJobsAPIResponse);
     }
 }
 
@@ -33,6 +33,6 @@ export async function inviteReviewerAPI(payload: IAddReviewer, token: string): P
         const response = await addReviewerAPI.json();
         return response;
     } catch (error) {
-        throw error
+        return (error as IHRJobsAPIResponse);
     }
 }
