@@ -24,6 +24,7 @@ export default async function ReviewerLayout({
             }
         }
     } catch (error) {
+        console.log(error)
         redirect('/')
     }
 }

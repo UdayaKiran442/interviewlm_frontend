@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
 import { ArrowRight, Brain, Clock, Play, Shield, Target } from "lucide-react";
 
-import Navigation from "./Navigation";
 
 import { H1, H2 } from "./ui/Typography";
 import Button from "./ui/Buttons";

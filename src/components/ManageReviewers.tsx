@@ -47,11 +47,12 @@ export default function ManageReviewers({
       }
     } catch (error) {
       setLoading(false);
+      console.error("Error inviting reviewer:", error);
       // You might want to add error handling UI here
     }
   }
 
-  function updateReviewerDetails(field: keyof IAddReviewer, value: any) {
+  function updateReviewerDetails(field: keyof IAddReviewer, value: unknown) {
     setAddReviewer((previousReviewerDetails) => {
       const updateReviewerDetails = {
         ...previousReviewerDetails,

@@ -29,6 +29,7 @@ export default async function HRLayout({
         redirect('/');
     } catch (error) {
         // Redirect to home on error
+        console.error("Error in HRLayout:", error);
         redirect('/');
     }
 }
