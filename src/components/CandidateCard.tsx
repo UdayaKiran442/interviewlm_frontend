@@ -12,6 +12,7 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
+import Link from "next/link";
 
 import {
   IGetApplicationsForJobAPIResponse,
@@ -23,7 +24,6 @@ import { ButtonSecondary } from "./ui/Buttons";
 import IconInfoItem from "./IconInfoItem";
 import ApplicationProgress from "./ApplicationProgress";
 import RoundFeedback from "./RoundFeedback";
-import { redirect, RedirectType } from "next/navigation";
 
 export default function CandidateCard({
   applicant,
@@ -159,18 +159,17 @@ export default function CandidateCard({
         </div>
         {/* right side button  */}
         <div>
-          <ButtonSecondary
-            onClick={() =>
-              redirect(
-                `/hr/candidates/${applicant.applicationId}`,
-                RedirectType.push
-              )
-            }
-            className="flex items-center gap-2"
+          <Link
+            href={{
+              pathname: `/hr/applicant/${applicant.applicationId}`,
+              query: { jobId: applicant.jobId },
+            }}
           >
-            <Eye size={20} />
-            View Profile
-          </ButtonSecondary>
+            <ButtonSecondary className="flex items-center gap-2">
+              <Eye size={20} />
+              View Profile
+            </ButtonSecondary>
+          </Link>
         </div>
       </div>
       {/* ai feedback and application round status */}

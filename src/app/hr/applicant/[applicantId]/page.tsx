@@ -1,14 +1,17 @@
-import React from "react";
-
-const ApplicantPage = async ({
-  params,
-}: {
+interface IProps {
   params: Promise<{ applicantId: string }>;
-}) => {
-  const { applicantId } = await params;
+  searchParams: Promise<{ jobId?: string }>;
+}
+
+const ApplicantPage = async ({ params, searchParams }: IProps) => {
+  const [{ applicantId }, { jobId }] = await Promise.all([
+    params,
+    searchParams,
+  ]);
   return (
     <div>
       <p>applicantId: {applicantId}</p>
+      <p>jobId: {jobId}</p>
     </div>
   );
 };
